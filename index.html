@@ -7,61 +7,65 @@
 
 <body>
 
-<!-- Navbar -->
 <nav>
-<h2>Jp's Store</h2>
+<h2>JP's Store</h2>
+
 <ul>
 <li>Home</li>
 <li>Brands</li>
 <li>Products</li>
 <li>Contact</li>
 </ul>
+
+<div class="nav-buttons">
+<button onclick="toggleDarkMode()">🌙</button>
+<div class="cart">🛒 <span id="cart-count">0</span></div>
+</div>
+
 </nav>
 
-<!-- Hero Section -->
 <section class="hero">
-<h1>Welcome to Jp's Clothing</h1>
-<p>Find the best fashion brands online</p>
+<h1>Welcome to JP Clothing</h1>
+<p>Find the best fashion brands</p>
 </section>
 
-<!-- Products -->
 <section class="products">
 
 <div class="product">
 <img src="https://via.placeholder.com/200">
 <h3>Nike T-Shirt</h3>
 <p>₹999</p>
-<button>Buy Now</button>
+<button onclick="addToCart()">Add to Cart</button>
 </div>
 
 <div class="product">
 <img src="https://via.placeholder.com/200">
 <h3>Adidas Hoodie</h3>
 <p>₹1999</p>
-<button>Buy Now</button>
+<button onclick="addToCart()">Add to Cart</button>
 </div>
 
 <div class="product">
 <img src="https://via.placeholder.com/200">
 <h3>Puma Sneakers</h3>
 <p>₹2999</p>
-<button>Buy Now</button>
+<button onclick="addToCart()">Add to Cart</button>
 </div>
 
 <div class="product">
 <img src="https://via.placeholder.com/200">
 <h3>Zara Jacket</h3>
 <p>₹3499</p>
-<button>Buy Now</button>
+<button onclick="addToCart()">Add to Cart</button>
 </div>
 
 </section>
 
-<!-- Footer -->
 <footer>
-<p>© 2026 Jp's Clothing Store</p>
+<p>© 2026 JP Clothing Store</p>
 </footer>
+
+<script src="script.js"></script>
 
 </body>
 </html>
-
