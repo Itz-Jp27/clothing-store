@@ -1,3 +1,10 @@
-function buy(){
-alert("Product added to cart!");
+let cart = 0;
+
+function addToCart(){
+cart++;
+document.getElementById("cart-count").innerText = cart;
+}
+
+function toggleDarkMode(){
+document.body.classList.toggle("dark");
 }
