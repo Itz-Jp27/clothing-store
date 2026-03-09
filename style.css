@@ -1,3 +1,14 @@
+.top-btn{
+position:fixed;
+bottom:20px;
+left:20px;
+padding:10px 15px;
+background:black;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
 body{
 font-family:Arial;
 margin:0;
@@ -112,3 +123,4 @@ grid-template-columns:1fr;
 }
 
 }
+
