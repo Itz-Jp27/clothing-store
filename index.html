@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,7 +8,7 @@
 
 <link rel="stylesheet" href="style.css">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 </head>
 
@@ -21,9 +20,29 @@
 
 <input type="text" id="search" placeholder="Search products..." onkeyup="searchProducts()">
 
+<select id="sort" onchange="sortProducts()">
+<option value="">Sort</option>
+<option value="low">Price: Low → High</option>
+<option value="high">Price: High → Low</option>
+</select>
+
 <button onclick="toggleCart()">🛒 <span id="cart-count">0</span></button>
 
 </header>
+
+<!-- HERO -->
+
+<section class="hero">
+
+<h1>Modern Fashion Store</h1>
+
+<p>Premium Clothing From Top Brands</p>
+
+<button onclick="document.getElementById('products').scrollIntoView()">Shop Now</button>
+
+</section>
+
+<!-- BRAND FILTER -->
 
 <section class="filters">
 
@@ -39,23 +58,35 @@
 
 </section>
 
+<!-- PRODUCTS -->
+
 <section class="products" id="products"></section>
+
+<p id="empty-message"></p>
 
 <!-- CART SLIDER -->
 
 <div id="cart-panel">
 
+<div class="cart-header">
+
 <h2>Your Cart</h2>
+
+<button onclick="toggleCart()">✖</button>
+
+</div>
 
 <div id="cart-items"></div>
 
 <h3>Total ₹<span id="cart-total">0</span></h3>
 
 <a href="cart.html">
-<button class="checkout">View Cart</button>
+<button class="checkout">Checkout</button>
 </a>
 
 </div>
+
+<div id="toast">Added to cart</div>
 
 <script src="script.js"></script>
 
