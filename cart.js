@@ -6,9 +6,9 @@ let total=0;
 
 cart.forEach((item,index)=>{
 
-let row=document.createElement("tr");
+table.innerHTML+=`
 
-row.innerHTML=`
+<tr>
 
 <td>${item.name}</td>
 
@@ -16,9 +16,9 @@ row.innerHTML=`
 
 <td><button onclick="removeItem(${index})">Remove</button></td>
 
-`;
+</tr>
 
-table.appendChild(row);
+`;
 
 total+=item.price;
 
@@ -31,14 +31,6 @@ function removeItem(i){
 cart.splice(i,1);
 
 localStorage.setItem("cart",JSON.stringify(cart));
-
-location.reload();
-
-}
-
-function clearCart(){
-
-localStorage.removeItem("cart");
 
 location.reload();
 
