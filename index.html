@@ -29,9 +29,49 @@
 <button onclick="toggleCart()">🛒 <span id="cart-count">0</span></button>
 
 </header>
+<header>
 
+<h1>JP Fashion Store</h1>
+
+<input type="text" id="search" placeholder="Search products..." onkeyup="searchProducts()">
+
+<select onchange="filterBrand(this.value)">
+<option value="all">All Brands</option>
+<option value="Nike">Nike</option>
+<option value="Adidas">Adidas</option>
+<option value="Puma">Puma</option>
+<option value="Zara">Zara</option>
+<option value="H&M">H&M</option>
+<option value="Allen Solly">Allen Solly</option>
+<option value="Max">Max</option>
+<option value="Snitch">Snitch</option>
+<option value="Louis Philippe">Louis Philippe</option>
+<option value="Trends">Trends</option>
+</select>
+
+<select onchange="sortProducts(this.value)">
+<option value="default">Sort</option>
+<option value="low">Price Low → High</option>
+<option value="high">Price High → Low</option>
+</select>
+
+<button onclick="toggleDarkMode()">🌙</button>
+
+<div onclick="toggleCart()" class="cart-icon">
+🛒 Cart <span id="cart-count">0</span>
+</div>
+
+</header>
 <!-- HERO -->
+<section class="hero">
 
+<h2>New Fashion Collection</h2>
+
+<p>Discover the latest styles from top brands</p>
+
+<button onclick="scrollToProducts()">Shop Now</button>
+
+</section>
 <section class="hero">
 
 <h1>Modern Fashion Store</h1>
@@ -59,13 +99,30 @@
 </section>
 
 <!-- PRODUCTS -->
+<section id="products" class="products"></section>
 
 <section class="products" id="products"></section>
 
 <p id="empty-message"></p>
 
 <!-- CART SLIDER -->
+<div id="cart-slider" class="cart-slider">
 
+<div class="cart-header">
+
+<h2>Your Cart</h2>
+
+<button onclick="toggleCart()">✖</button>
+
+</div>
+
+<div id="cart-items"></div>
+
+<h3 id="total-price">Total: ₹0</h3>
+
+<button onclick="checkout()">Checkout</button>
+
+</div>
 <div id="cart-panel">
 
 <div class="cart-header">
@@ -92,3 +149,4 @@
 
 </body>
 </html>
+
