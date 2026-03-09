@@ -1,50 +1,144 @@
+let products=[
+
+{brand:"zara",name:"Zara Shirt",price:1999,desc:"Slim cotton shirt",img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"},
+
+{brand:"hm",name:"H&M Hoodie",price:2499,desc:"Comfort hoodie",img:"https://images.unsplash.com/photo-1503342217505-b0a15ec3261c"},
+
+{brand:"allen",name:"Allen Solly Shirt",price:1799,desc:"Formal slim shirt",img:"https://images.unsplash.com/photo-1520975928316-56d90d1a7a2a"},
+
+{brand:"max",name:"Max Casual Shirt",price:899,desc:"Daily wear shirt",img:"https://images.unsplash.com/photo-1521336575822-6da63fb45455"},
+
+{brand:"louis",name:"Louis Philippe Blazer",price:4999,desc:"Premium blazer",img:"https://images.unsplash.com/photo-1520975867597-0af37a22e31a"},
+
+{brand:"trends",name:"Trends Denim Jacket",price:2299,desc:"Stylish denim jacket",img:"https://images.unsplash.com/photo-1516822003754-cca485356ecb"},
+
+{brand:"adidas",name:"Adidas Sports Tee",price:1599,desc:"Sports performance tee",img:"https://images.unsplash.com/photo-1520975693419-74a1a3f3c8b0"},
+
+{brand:"snitch",name:"Snitch Overshirt",price:1899,desc:"Trendy overshirt",img:"https://images.unsplash.com/photo-1520975693419-74a1a3f3c8b0"}
+
+];
+
 let cart=JSON.parse(localStorage.getItem("cart"))||[];
+
+function displayProducts(list){
+
+const container=document.getElementById("products");
+const empty=document.getElementById("empty-message");
+
+container.innerHTML="";
+
+if(list.length===0){
+empty.innerText="Products coming soon!";
+return;
+}else{
+empty.innerText="";
+}
+
+list.forEach((p,i)=>{
+
+container.innerHTML+=`
+
+<div class="product ${p.brand}">
+
+<img src="${p.img}">
+
+<h3>${p.name}</h3>
+
+<p>${p.desc}</p>
+
+<h4>₹${p.price}</h4>
+
+<button onclick="addToCart(${i})">Add to Cart</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+displayProducts(products);
+
+function filterProducts(brand){
+
+if(brand==="all"){
+displayProducts(products);
+}else{
+displayProducts(products.filter(p=>p.brand===brand));
+}
+
+}
+
+function searchProducts(){
+
+let value=document.getElementById("search").value.toLowerCase();
+
+displayProducts(products.filter(p=>p.name.toLowerCase().includes(value)));
+
+}
+
+function sortProducts(){
+
+let value=document.getElementById("sort").value;
+
+let sorted=[...products];
+
+if(value==="low"){
+sorted.sort((a,b)=>a.price-b.price);
+}
+
+if(value==="high"){
+sorted.sort((a,b)=>b.price-a.price);
+}
+
+displayProducts(sorted);
+
+}
+
+function addToCart(i){
+
+cart.push(products[i]);
+
+showToast();
+
+updateCart();
+
+}
 
 function updateCart(){
 
 let items=document.getElementById("cart-items");
-let count=document.getElementById("cart-count");
-let total=document.getElementById("cart-total");
-
-if(!items) return;
+let total=0;
 
 items.innerHTML="";
 
-let sum=0;
-
 cart.forEach((item,index)=>{
 
-let div=document.createElement("div");
+items.innerHTML+=`
 
-div.innerHTML=`${item.name} - ₹${item.price}
-<button onclick="removeItem(${index})">❌</button>`;
+<p>${item.name} - ₹${item.price}
 
-items.appendChild(div);
+<button onclick="removeItem(${index})">❌</button>
 
-sum+=item.price;
+</p>
+
+`;
+
+total+=item.price;
 
 });
 
-count.innerText=cart.length;
-
-total.innerText=sum;
+document.getElementById("cart-count").innerText=cart.length;
+document.getElementById("cart-total").innerText=total;
 
 localStorage.setItem("cart",JSON.stringify(cart));
-
-}
-
-function addToCart(name,price){
-
-cart.push({name,price});
-
-updateCart();
 
 }
 
 function removeItem(i){
 
 cart.splice(i,1);
-
 updateCart();
 
 }
@@ -55,76 +149,16 @@ document.getElementById("cart-panel").classList.toggle("open");
 
 }
 
-function filterProducts(brand){
+function showToast(){
 
-let products=document.querySelectorAll(".product");
+let toast=document.getElementById("toast");
 
-products.forEach(p=>{
+toast.style.display="block";
 
-if(brand==="all"||p.classList.contains(brand)){
-p.style.display="block";
-}else{
-p.style.display="none";
-}
-
-});
-}
-
-function searchProducts(){
-
-let input=document.getElementById("search").value.toLowerCase();
-
-let products=document.querySelectorAll(".product");
-
-products.forEach(p=>{
-
-let name=p.querySelector("h3").innerText.toLowerCase();
-
-p.style.display=name.includes(input)?"block":"none";
-
-});
-}
-
-function toggleTheme(){
-
-document.body.classList.toggle("dark");
+setTimeout(()=>{
+toast.style.display="none";
+},2000);
 
 }
 
-function quickView(name,price,img){
-
-document.getElementById("popup").style.display="block";
-
-document.getElementById("popup-title").innerText=name;
-
-document.getElementById("popup-price").innerText=price;
-
-document.getElementById("popup-img").src=img;
-
-}
-
-function closePopup(){
-
-document.getElementById("popup").style.display="none";
-
-}
-
-let images=[
-"https://images.unsplash.com/photo-1523381210434-271e8be1f52b",
-"https://images.unsplash.com/photo-1490481651871-ab68de25d43d",
-"https://images.unsplash.com/photo-1445205170230-053b83016050"
-];
-
-let i=0;
-
-setInterval(()=>{
-
-i++;
-
-if(i>=images.length){i=0;}
-
-document.getElementById("slide-img").src=images[i];
-
-},3000);
-
-window.onload=updateCart;
+updateCart();
