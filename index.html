@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
 <title>JP Clothing Store</title>
 
 <link rel="stylesheet" href="style.css">
@@ -11,105 +13,175 @@
 
 <body>
 
-<nav>
+<header>
 
-<h2>JP Clothing</h2>
+<h1>JP Clothing Store</h1>
+
+<div>
 
 <input type="text" id="search" placeholder="Search..." onkeyup="searchProducts()">
 
-<ul>
-<li>Home</li>
-<li>Brands</li>
-<li>Products</li>
-<li>Contact</li>
-</ul>
+<button onclick="toggleTheme()">🌙</button>
 
-<div class="nav-right">
+<button onclick="toggleCart()">🛒 (<span id="cart-count">0</span>)</button>
 
-<button onclick="toggleDarkMode()">🌙</button>
-
-<a href="cart.html">🛒 Cart (<span id="cart-count">0</span>)</a>
+<a href="cart.html">Cart Page</a>
 
 </div>
 
-</nav>
+</header>
+
+
+<!-- IMAGE SLIDER -->
+
+<section class="slider">
+
+<img id="slide-img" src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b">
+
+</section>
+
+
+<!-- HERO -->
 
 <section class="hero">
 
-<h1>Welcome to JP Clothing Store</h1>
+<h2>Latest Fashion Collection</h2>
 
-<p>Find the best fashion brands</p>
+<p>Best Style For You</p>
+
+<button onclick="window.location='#products'">Shop Now</button>
 
 </section>
 
-<section class="products">
 
-<div class="product">
+<!-- BRAND FILTER -->
 
-<img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab">
+<div class="filters">
 
+<button onclick="filterProducts('all')">All</button>
+<button onclick="filterProducts('nike')">Nike</button>
+<button onclick="filterProducts('adidas')">Adidas</button>
+<button onclick="filterProducts('puma')">Puma</button>
+<button onclick="filterProducts('reebok')">Reebok</button>
+<button onclick="filterProducts('underarmour')">Under Armour</button>
+<button onclick="filterProducts('newbalance')">New Balance</button>
+
+</div>
+
+
+<!-- PRODUCTS -->
+
+<section class="products" id="products">
+
+<div class="product nike">
+<img src="https://static.nike.com/a/images/t_default/af1.jpg">
 <h3>Nike T-Shirt</h3>
-
 <p>₹999</p>
-
-<button onclick="addToCart('Nike T-Shirt')">Add to Cart</button>
-
-<button onclick="addToWishlist('Nike T-Shirt')">❤️</button>
-
+<button onclick="addToCart('Nike T-Shirt',999)">Add to Cart</button>
+<button onclick="quickView('Nike T-Shirt','₹999','https://static.nike.com/a/images/t_default/af1.jpg')">Quick View</button>
 </div>
 
+<div class="product nike">
+<img src="https://static.nike.com/a/images/t_default/shoes.jpg">
+<h3>Nike Sneakers</h3>
+<p>₹3999</p>
+<button onclick="addToCart('Nike Sneakers',3999)">Add to Cart</button>
+<button onclick="quickView('Nike Sneakers','₹3999','https://static.nike.com/a/images/t_default/shoes.jpg')">Quick View</button>
+</div>
 
-<div class="product">
+<div class="product adidas">
+<img src="https://assets.adidas.com/images/w_600/f_auto,q_auto/shirt.jpg">
+<h3>Adidas Shirt</h3>
+<p>₹1299</p>
+<button onclick="addToCart('Adidas Shirt',1299)">Add to Cart</button>
+<button onclick="quickView('Adidas Shirt','₹1299','https://assets.adidas.com/images/w_600/f_auto,q_auto/shirt.jpg')">Quick View</button>
+</div>
 
-<img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b">
-
+<div class="product adidas">
+<img src="https://assets.adidas.com/images/w_600/f_auto,q_auto/hoodie.jpg">
 <h3>Adidas Hoodie</h3>
-
 <p>₹1999</p>
-
-<button onclick="addToCart('Adidas Hoodie')">Add to Cart</button>
-
-<button onclick="addToWishlist('Adidas Hoodie')">❤️</button>
-
+<button onclick="addToCart('Adidas Hoodie',1999)">Add to Cart</button>
+<button onclick="quickView('Adidas Hoodie','₹1999','https://assets.adidas.com/images/w_600/f_auto,q_auto/hoodie.jpg')">Quick View</button>
 </div>
 
+<div class="product puma">
+<img src="https://images.puma.com/image/upload/f_auto,q_auto/shirt.jpg">
+<h3>Puma T-Shirt</h3>
+<p>₹899</p>
+<button onclick="addToCart('Puma T-Shirt',899)">Add to Cart</button>
+<button onclick="quickView('Puma T-Shirt','₹899','https://images.puma.com/image/upload/f_auto,q_auto/shirt.jpg')">Quick View</button>
+</div>
 
-<div class="product">
+<div class="product puma">
+<img src="https://images.puma.com/image/upload/f_auto,q_auto/jacket.jpg">
+<h3>Puma Jacket</h3>
+<p>₹2499</p>
+<button onclick="addToCart('Puma Jacket',2499)">Add to Cart</button>
+<button onclick="quickView('Puma Jacket','₹2499','https://images.puma.com/image/upload/f_auto,q_auto/jacket.jpg')">Quick View</button>
+</div>
 
-<img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff">
-
-<h3>Puma Sneakers</h3>
-
+<div class="product reebok">
+<img src="https://assets.reebok.com/images/w_600/shoes.jpg">
+<h3>Reebok Shoes</h3>
 <p>₹2999</p>
-
-<button onclick="addToCart('Puma Sneakers')">Add to Cart</button>
-
-<button onclick="addToWishlist('Puma Sneakers')">❤️</button>
-
+<button onclick="addToCart('Reebok Shoes',2999)">Add to Cart</button>
+<button onclick="quickView('Reebok Shoes','₹2999','https://assets.reebok.com/images/w_600/shoes.jpg')">Quick View</button>
 </div>
 
+<div class="product underarmour">
+<img src="https://underarmour.scene7.com/is/image/Underarmour/shirt.jpg">
+<h3>Under Armour Shirt</h3>
+<p>₹1499</p>
+<button onclick="addToCart('Under Armour Shirt',1499)">Add to Cart</button>
+<button onclick="quickView('Under Armour Shirt','₹1499','https://underarmour.scene7.com/is/image/Underarmour/shirt.jpg')">Quick View</button>
+</div>
 
-<div class="product">
-
-<img src="https://images.unsplash.com/photo-1520975922284-9a6c1f0a0f7c">
-
-<h3>Zara Jacket</h3>
-
-<p>₹3499</p>
-
-<button onclick="addToCart('Zara Jacket')">Add to Cart</button>
-
-<button onclick="addToWishlist('Zara Jacket')">❤️</button>
-
+<div class="product newbalance">
+<img src="https://nb.scene7.com/is/image/NB/shoes.jpg">
+<h3>New Balance Shoes</h3>
+<p>₹3599</p>
+<button onclick="addToCart('New Balance Shoes',3599)">Add to Cart</button>
+<button onclick="quickView('New Balance Shoes','₹3599','https://nb.scene7.com/is/image/NB/shoes.jpg')">Quick View</button>
 </div>
 
 </section>
 
-<footer>
 
-<p>© 2026 JP Clothing Store</p>
+<!-- QUICK VIEW POPUP -->
 
-</footer>
+<div id="popup" class="popup">
+
+<div class="popup-content">
+
+<span onclick="closePopup()" class="close">X</span>
+
+<img id="popup-img">
+
+<h2 id="popup-title"></h2>
+
+<p id="popup-price"></p>
+
+</div>
+
+</div>
+
+
+<!-- CART PANEL -->
+
+<div id="cart-panel">
+
+<h2>Your Cart</h2>
+
+<div id="cart-items"></div>
+
+<h3>Total ₹<span id="cart-total">0</span></h3>
+
+<a href="checkout.html">
+<button class="checkout">Checkout</button>
+</a>
+
+</div>
 
 <script src="script.js"></script>
 
