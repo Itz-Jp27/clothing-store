@@ -1,36 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JP Clothing Store</title>
-
-<link rel="stylesheet" href="style.css">
-
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <header>
-
-<h2>JP Clothing</h2>
-
-<input type="text" id="search" placeholder="Search products..." onkeyup="searchProducts()">
-
-<select id="sort" onchange="sortProducts()">
-<option value="">Sort</option>
-<option value="low">Price: Low → High</option>
-<option value="high">Price: High → Low</option>
-</select>
-
-<button onclick="toggleCart()">🛒 <span id="cart-count">0</span></button>
-
-</header>
-<header>
-
 <h1>JP Fashion Store</h1>
 
 <input type="text" id="search" placeholder="Search products..." onkeyup="searchProducts()">
@@ -60,93 +39,28 @@
 <div onclick="toggleCart()" class="cart-icon">
 🛒 Cart <span id="cart-count">0</span>
 </div>
-
 </header>
-<!-- HERO -->
-<section class="hero">
 
+<section class="hero">
 <h2>New Fashion Collection</h2>
-
 <p>Discover the latest styles from top brands</p>
-
 <button onclick="scrollToProducts()">Shop Now</button>
-
-</section>
-<section class="hero">
-
-<h1>Modern Fashion Store</h1>
-
-<p>Premium Clothing From Top Brands</p>
-
-<button onclick="document.getElementById('products').scrollIntoView()">Shop Now</button>
-
 </section>
 
-<!-- BRAND FILTER -->
-
-<section class="filters">
-
-<button onclick="filterProducts('all')">All</button>
-<button onclick="filterProducts('zara')">Zara</button>
-<button onclick="filterProducts('hm')">H&M</button>
-<button onclick="filterProducts('allen')">Allen Solly</button>
-<button onclick="filterProducts('max')">Max</button>
-<button onclick="filterProducts('louis')">Louis Philippe</button>
-<button onclick="filterProducts('trends')">Trends</button>
-<button onclick="filterProducts('adidas')">Adidas</button>
-<button onclick="filterProducts('snitch')">Snitch</button>
-
-</section>
-
-<!-- PRODUCTS -->
 <section id="products" class="products"></section>
 
-<section class="products" id="products"></section>
-
-<p id="empty-message"></p>
-
-<!-- CART SLIDER -->
 <div id="cart-slider" class="cart-slider">
-
 <div class="cart-header">
-
 <h2>Your Cart</h2>
-
 <button onclick="toggleCart()">✖</button>
-
 </div>
-
 <div id="cart-items"></div>
-
 <h3 id="total-price">Total: ₹0</h3>
-
 <button onclick="checkout()">Checkout</button>
-
-</div>
-<div id="cart-panel">
-
-<div class="cart-header">
-
-<h2>Your Cart</h2>
-
-<button onclick="toggleCart()">✖</button>
-
-</div>
-
-<div id="cart-items"></div>
-
-<h3>Total ₹<span id="cart-total">0</span></h3>
-
-<a href="cart.html">
-<button class="checkout">Checkout</button>
-</a>
-
 </div>
 
 <div id="toast">Added to cart</div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
-
