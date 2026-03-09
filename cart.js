@@ -1,19 +1,45 @@
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let cart=JSON.parse(localStorage.getItem("cart"))||[];
 
-let container = document.getElementById("cart-items");
+let table=document.getElementById("cart-table");
 
-if(cart.length === 0){
-container.innerHTML = "Your cart is empty";
-}else{
+let total=0;
 
-cart.forEach((item)=>{
+cart.forEach((item,index)=>{
 
-let div = document.createElement("div");
+let row=document.createElement("tr");
 
-div.innerHTML = item;
+row.innerHTML=`
 
-container.appendChild(div);
+<td>${item.name}</td>
+
+<td>₹${item.price}</td>
+
+<td><button onclick="removeItem(${index})">Remove</button></td>
+
+`;
+
+table.appendChild(row);
+
+total+=item.price;
 
 });
+
+document.getElementById("total").innerText=total;
+
+function removeItem(i){
+
+cart.splice(i,1);
+
+localStorage.setItem("cart",JSON.stringify(cart));
+
+location.reload();
+
+}
+
+function clearCart(){
+
+localStorage.removeItem("cart");
+
+location.reload();
 
 }
