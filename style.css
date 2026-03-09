@@ -1,67 +1,58 @@
 body{
 font-family:'Poppins',sans-serif;
 margin:0;
-background:#f5f5f5;
+background:#f4f4f4;
 }
 
 header{
 display:flex;
-gap:10px;
-flex-wrap:wrap;
-align-items:center;
 justify-content:space-between;
-padding:15px 25px;
+align-items:center;
+padding:15px;
 background:black;
 color:white;
+flex-wrap:wrap;
 }
 
-header input, select{
+header input{
 padding:8px;
-border-radius:5px;
-border:none;
+width:200px;
 }
 
 .filters{
 text-align:center;
-padding:15px;
+padding:10px;
 }
 
 .filters button{
-margin:6px;
+margin:5px;
 padding:8px 15px;
-border:none;
-cursor:pointer;
 }
 
 .products{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:25px;
-padding:30px;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+padding:20px;
 }
 
 .product{
 background:white;
-padding:20px;
+padding:15px;
 border-radius:10px;
-box-shadow:0 4px 10px rgba(0,0,0,0.08);
-transition:0.3s;
 text-align:center;
-}
-
-.product:hover{
-transform:translateY(-5px);
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
 }
 
 .product img{
 width:100%;
-height:250px;
+height:200px;
 object-fit:cover;
 border-radius:8px;
 }
 
 .product h3{
-margin-top:12px;
+margin:10px 0;
 }
 
 .product p{
@@ -72,19 +63,17 @@ color:#555;
 button{
 background:black;
 color:white;
-padding:10px 15px;
 border:none;
-border-radius:5px;
+padding:8px 12px;
+margin-top:5px;
 cursor:pointer;
-margin-top:8px;
-transition:0.3s;
 }
 
 button:hover{
-background:#ff4d4d;
+background:red;
 }
 
-/* CART PANEL */
+/* CART SLIDER */
 
 #cart-panel{
 position:fixed;
@@ -94,7 +83,7 @@ width:320px;
 height:100%;
 background:white;
 padding:20px;
-box-shadow:-4px 0 12px rgba(0,0,0,0.2);
+box-shadow:-3px 0 10px rgba(0,0,0,0.2);
 transition:0.4s;
 overflow:auto;
 }
@@ -103,43 +92,25 @@ overflow:auto;
 right:0;
 }
 
-/* TOAST */
-
-#toast{
-position:fixed;
-bottom:30px;
-left:50%;
-transform:translateX(-50%);
-background:black;
-color:white;
-padding:12px 20px;
-border-radius:5px;
-display:none;
-}
-
-/* EMPTY MESSAGE */
-
-#empty-message{
-text-align:center;
-font-size:18px;
-color:#666;
+.checkout{
+background:green;
 }
 
 /* MOBILE */
 
 @media(max-width:600px){
 
-.products{
-grid-template-columns:1fr 1fr;
-padding:15px;
-}
-
 header{
 flex-direction:column;
+gap:10px;
 }
 
 header input{
 width:100%;
+}
+
+.products{
+grid-template-columns:1fr 1fr;
 }
 
 }
