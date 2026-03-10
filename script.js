@@ -51,7 +51,6 @@ btn.onclick=()=>filterBrand(b)
 brandBox.appendChild(btn)
 })
 
-
 function showProducts(list){
 
 let box=document.getElementById("products")
@@ -62,7 +61,9 @@ box.innerHTML=""
 if(list.length===0){
 empty.style.display="block"
 return
-}else empty.style.display="none"
+}else{
+empty.style.display="none"
+}
 
 list.forEach((p,i)=>{
 
@@ -70,7 +71,7 @@ box.innerHTML+=`
 
 <div class="product">
 
-<img src="${p.img}" onclick="quickView(${i})">
+<img src="${p.image}" onclick="quickView(${i})">
 
 <h3>${p.name}</h3>
 
@@ -88,12 +89,11 @@ box.innerHTML+=`
 
 }
 
-
 function quickView(i){
 
 let q=document.getElementById("quickview")
 
-document.getElementById("q-img").src=products[i].img
+document.getElementById("q-img").src=products[i].image
 document.getElementById("q-name").innerText=products[i].name
 document.getElementById("q-price").innerText="₹"+products[i].price
 
@@ -107,7 +107,6 @@ document.getElementById("quickview").style.display="none"
 
 }
 
-
 function addCart(i){
 
 let qty=parseInt(document.getElementById("q"+i).value)
@@ -117,14 +116,28 @@ alert("Out of Stocks")
 return
 }
 
+let existing=cart.find(item=>item.name===products[i].name)
+
+if(existing){
+
+existing.qty+=qty
+
+if(existing.qty>8){
+existing.qty=8
+alert("Out of Stocks")
+}
+
+}else{
+
 cart.push({...products[i],qty})
+
+}
 
 updateCart()
 
 toast()
 
 }
-
 
 function updateCart(){
 
@@ -140,7 +153,7 @@ box.innerHTML+=`
 
 <div class="cart-item">
 
-${p.name}
+<b>${p.name}</b>
 
 <div class="qty">
 
@@ -169,7 +182,6 @@ document.getElementById("cart-count").innerText=cart.length
 
 }
 
-
 function inc(i){
 
 if(cart[i].qty>=8){
@@ -185,12 +197,13 @@ updateCart()
 
 function dec(i){
 
-if(cart[i].qty>1) cart[i].qty--
+if(cart[i].qty>1){
+cart[i].qty--
+}
 
 updateCart()
 
 }
-
 
 function removeItem(i){
 
@@ -200,13 +213,11 @@ updateCart()
 
 }
 
-
 function toggleCart(){
 
 document.getElementById("cart").classList.toggle("open")
 
 }
-
 
 function toast(){
 
@@ -214,10 +225,11 @@ let t=document.getElementById("toast")
 
 t.style.display="block"
 
-setTimeout(()=>t.style.display="none",2000)
+setTimeout(()=>{
+t.style.display="none"
+},2000)
 
 }
-
 
 function searchProducts(){
 
@@ -229,13 +241,11 @@ showProducts(f)
 
 }
 
-
 function filterBrand(b){
 
 showProducts(products.filter(p=>p.brand===b))
 
 }
-
 
 function sortProducts(t){
 
@@ -249,24 +259,19 @@ showProducts(arr)
 
 }
 
-
 function scrollToProducts(){
 
 document.getElementById("products").scrollIntoView({behavior:"smooth"})
 
 }
 
-
 window.onload=function(){
 
 setTimeout(()=>{
-
 document.getElementById("loader").style.display="none"
-
 },1000)
 
 }
-
 
 showProducts(products)
 
