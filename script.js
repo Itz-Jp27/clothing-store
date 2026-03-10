@@ -38,10 +38,9 @@ let products=[
 {name:"Trends Jeans",brand:"Trends",price:2399,image:"https://images.unsplash.com/photo-1600185364135-3c8d7b2f1a2d",description:"Denim jeans"}
 ];
 
-// The JS for persistent cart, add to cart with max 8 qty, search, filter, sorting remains the same
+let cart=[]; // always start cart at 0
 
-let cart=JSON.parse(localStorage.getItem("cart"))||[];
-
+// Brand Buttons
 const brandContainer=document.getElementById("brand-filters");
 [...new Set(products.map(p=>p.brand))].forEach(b=>{
 const btn=document.createElement("button");
@@ -50,6 +49,7 @@ btn.onclick=()=>filterBrand(b);
 brandContainer.appendChild(btn);
 });
 
+// Display Products
 function displayProducts(list){
 const container=document.getElementById("products");
 const emptyState=document.getElementById("empty-state");
@@ -65,19 +65,25 @@ container.innerHTML+=`
 <p>${p.description}</p>
 <label>Quantity:</label>
 <input type="number" value="1" min="1" max="8" id="qty-${index}">
-<button onclick="addToCart(${index})">Add to Cart</button>
+<button onclick="addToCart(${index})" id="btn-${index}">Add to Cart</button>
 </div>`;});
 }
 
-displayProducts(products);
-
+// Add to Cart with Quantity Limit & Toast
 function addToCart(index){
 const qty=parseInt(document.getElementById(`qty-${index}`).value)||1;
+if(qty>8){alert("Out of stock! Max 8 per product."); return;}
 const item={...products[index], quantity:qty};
 const existing=cart.find(p=>p.name===item.name);
 if(existing){existing.quantity=Math.min(existing.quantity+qty,8);} else {cart.push(item);}
-localStorage.setItem("cart",JSON.stringify(cart));
-updateCart(); showToast();
+
+// Visual Feedback
+const btn=document.getElementById(`btn-${index}`);
+btn.innerText="Added!";
+setTimeout(()=>btn.innerText="Add to Cart",2000);
+
+showToast();
+updateCart();
 }
 
 function updateCart(){
@@ -97,6 +103,8 @@ function searchProducts(){let value=document.getElementById("search").value.toLo
 function filterBrand(brand){displayProducts(products.filter(p=>p.brand===brand));}
 function sortProducts(type){let sorted=[...products];if(type==="low"){sorted.sort((a,b)=>a.price-b.price);}if(type==="high"){sorted.sort((a,b)=>b.price-a.price);}displayProducts(sorted);}
 function toggleDarkMode(){document.body.classList.toggle("dark");}
-function checkout(){alert("Order placed successfully!");cart=[];localStorage.removeItem("cart");updateCart();}
+function checkout(){alert("Order placed successfully!");cart=[];updateCart();}
 function scrollToProducts(){document.getElementById("products").scrollIntoView({behavior:"smooth"});}
+displayProducts(products);
 updateCart();
+
