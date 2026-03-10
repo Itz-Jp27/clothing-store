@@ -2,7 +2,7 @@ let products=[
 {name:"Nike Air Shirt",brand:"Nike",price:1999,image:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab",description:"Premium cotton shirt"},
 {name:"Nike Sports Shorts",brand:"Nike",price:1299,image:"https://images.unsplash.com/photo-1600185364095-9cfc2e8d0fae",description:"Lightweight running shorts"},
 {name:"Nike Hoodie",brand:"Nike",price:2499,image:"https://images.unsplash.com/photo-1600185364135-88f0c5f0a30d",description:"Comfortable hoodie"},
-{name:"Nike Sneakers",brand:"Nike",price:3999,image:"https://assets-jiocdn.ajio.com/medias/sys_master/root1/20251211/VgUW/693abbb4720fb821d383e329/-473Wx593H-469772303-dgrey-MODEL.jpg",description:"Breathable sports sneakers"},
+{name:"Nike Sneakers",brand:"Nike",price:3999,image:"https://assets-jiocdn.ajio.com/medias/sys_master/root1/20250818/hNjR/68a328bf3d468c61ab75283f/-473Wx593H-469764328-blackgrey-MODEL2.jpg",description:"Breathable sports sneakers"},
 {name:"Nike Cap",brand:"Nike",price:799,image:"https://images.unsplash.com/photo-1611080625161-c46c8d5a6de0",description:"Adjustable sports cap"},
 {name:"Adidas Sport Tee",brand:"Adidas",price:1799,image:"https://images.unsplash.com/photo-1503342217505-b0a15ec3261c",description:"Comfort sportswear"},
 {name:"Adidas Hoodie",brand:"Adidas",price:2499,image:"https://images.unsplash.com/photo-1600185364095-3e8fc0f0f3ac",description:"Warm stylish hoodie"},
@@ -107,5 +107,6 @@ function checkout(){alert("Order placed successfully!");cart=[];updateCart();}
 function scrollToProducts(){document.getElementById("products").scrollIntoView({behavior:"smooth"});}
 displayProducts(products);
 updateCart();
+
 
 
