@@ -17,13 +17,10 @@
 
 <div class="header-center">
 <input type="text" id="search" placeholder="Search products..." onkeyup="searchProducts()">
-
-<div class="brand-filters" id="brand-filters"></div>
-
 <select onchange="sortProducts(this.value)">
-<option value="default">Sort</option>
-<option value="low">Price Low → High</option>
-<option value="high">Price High → Low</option>
+<option value="default">Sort by</option>
+<option value="low">Price: Low → High</option>
+<option value="high">Price: High → Low</option>
 </select>
 </div>
 
@@ -34,12 +31,19 @@
 </header>
 
 <section class="hero">
-<h2>New Fashion Collection</h2>
-<p>Discover the latest styles from top brands</p>
+<h2>Discover Your Style</h2>
+<p>Top brands. Best prices. New arrivals.</p>
 <button onclick="scrollToProducts()">Shop Now</button>
 </section>
 
+<div class="main-content">
+<aside class="sidebar">
+<h3>Brands</h3>
+<div class="brand-filters" id="brand-filters"></div>
+</aside>
+
 <section id="products" class="products"></section>
+</div>
 
 <div id="empty-state">No products found in this category.</div>
 
@@ -51,6 +55,7 @@
 <div id="cart-items"></div>
 <h3 id="total-price">Total: ₹0</h3>
 <button onclick="checkout()">Checkout</button>
+<button onclick="toggleCart()">Back to Shop</button>
 </div>
 
 <div id="toast">Added to cart</div>
