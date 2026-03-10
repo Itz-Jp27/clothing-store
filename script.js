@@ -38,7 +38,6 @@ let products=[
 {name:"Trends Jeans",brand:"Trends",price:2399,image:"https://images.unsplash.com/photo-1600185364135-3c8d7b2f1a2d",description:"Denim jeans"}
 ];
 
-
 let cart=[]
 
 let brandBox=document.getElementById("brand-filters")
@@ -229,24 +228,48 @@ let f=products.filter(p=>p.name.toLowerCase().includes(val))
 showProducts(f)
 
 }
+
+
 function filterBrand(b){
+
 showProducts(products.filter(p=>p.brand===b))
+
 }
+
+
 function sortProducts(t){
+
 let arr=[...products]
+
 if(t==="low") arr.sort((a,b)=>a.price-b.price)
+
 if(t==="high") arr.sort((a,b)=>b.price-a.price)
+
 showProducts(arr)
+
 }
+
+
 function scrollToProducts(){
+
 document.getElementById("products").scrollIntoView({behavior:"smooth"})
+
 }
+
+
 window.onload=function(){
+
 setTimeout(()=>{
+
 document.getElementById("loader").style.display="none"
+
 },1000)
+
 }
+
+
 showProducts(products)
+
 
 
 
