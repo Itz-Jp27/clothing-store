@@ -1,32 +1,114 @@
-```html
 <!DOCTYPE html>
 <html>
 <head>
-<title>Checkout</title>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Checkout | StyleCart</title>
+
 <link rel="stylesheet" href="style.css">
+
+<style>
+
+.checkout-container{
+max-width:900px;
+margin:40px auto;
+background:white;
+padding:30px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.checkout-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+.checkout-container input{
+width:100%;
+padding:10px;
+margin:8px 0;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+.pay-btn{
+width:100%;
+padding:15px;
+background:#111;
+color:white;
+border:none;
+border-radius:8px;
+font-size:16px;
+cursor:pointer;
+}
+
+.pay-btn:hover{
+background:#333;
+}
+
+</style>
+
 </head>
 
 <body>
 
-<div class="checkout-page">
+<header>
 
-<h1>Checkout</h1>
+<h2>StyleCart Checkout</h2>
 
-<p>This is a demo checkout page</p>
+</header>
 
-<button onclick="order()">Place Order</button>
+
+<div class="checkout-container">
+
+<h2>Billing Details</h2>
+
+<div class="checkout-grid">
+
+<div>
+
+<input placeholder="Full Name">
+
+<input placeholder="Email">
+
+<input placeholder="Phone">
+
+<input placeholder="Address">
+
+<input placeholder="City">
+
+<input placeholder="Pincode">
 
 </div>
 
-<script>
+<div>
 
-function order(){
-alert("Order Placed Successfully")
-window.location.href="index.html"
-}
+<h3>Payment Method</h3>
 
-</script>
+<label><input type="radio" name="pay"> Credit / Debit Card</label><br>
+
+<label><input type="radio" name="pay"> UPI</label><br>
+
+<label><input type="radio" name="pay"> Cash on Delivery</label>
+
+<br><br>
+
+<h3>Order Summary</h3>
+
+<p>Total Items: <span id="items">3</span></p>
+
+<p>Total Price: ₹<span id="price">5999</span></p>
+
+<button class="pay-btn">Place Order</button>
+
+</div>
+
+</div>
+
+</div>
 
 </body>
 </html>
-```
