@@ -1,31 +1,32 @@
+```html
 <!DOCTYPE html>
 <html>
-
 <head>
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
 <title>Checkout</title>
-
 <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
 
-<h1 style="text-align:center">Checkout</h1>
+<div class="checkout-page">
 
-<form action="success.html" style="max-width:400px;margin:auto">
+<h1>Checkout</h1>
 
-<input type="text" placeholder="Full Name" required style="width:100%;padding:10px"><br><br>
+<p>This is a demo checkout page</p>
 
-<input type="text" placeholder="Address" required style="width:100%;padding:10px"><br><br>
+<button onclick="order()">Place Order</button>
 
-<input type="text" placeholder="Phone Number" required style="width:100%;padding:10px"><br><br>
+</div>
 
-<button type="submit" style="width:100%">Place Order</button>
+<script>
 
-</form>
+function order(){
+alert("Order Placed Successfully")
+window.location.href="index.html"
+}
+
+</script>
 
 </body>
 </html>
+```
