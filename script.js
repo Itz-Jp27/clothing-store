@@ -38,75 +38,215 @@ let products=[
 {name:"Trends Jeans",brand:"Trends",price:2399,image:"https://images.unsplash.com/photo-1600185364135-3c8d7b2f1a2d",description:"Denim jeans"}
 ];
 
-let cart=[]; // always start cart at 0
 
-// Brand Buttons
-const brandContainer=document.getElementById("brand-filters");
-[...new Set(products.map(p=>p.brand))].forEach(b=>{
-const btn=document.createElement("button");
-btn.innerText=b;
-btn.onclick=()=>filterBrand(b);
-brandContainer.appendChild(btn);
-});
+let cart=[]
 
-// Display Products
-function displayProducts(list){
-const container=document.getElementById("products");
-const emptyState=document.getElementById("empty-state");
-container.innerHTML="";
-if(list.length===0){emptyState.style.display="block"; return;} else {emptyState.style.display="none";}
-list.forEach((p,index)=>{
-container.innerHTML+=`
-<div class="product-card">
-<img src="${p.image}">
+let brandBox=document.getElementById("brand-filters")
+
+let brands=[...new Set(products.map(p=>p.brand))]
+
+brands.forEach(b=>{
+let btn=document.createElement("button")
+btn.innerText=b
+btn.onclick=()=>filterBrand(b)
+brandBox.appendChild(btn)
+})
+
+
+function showProducts(list){
+
+let box=document.getElementById("products")
+let empty=document.getElementById("empty")
+
+box.innerHTML=""
+
+if(list.length===0){
+empty.style.display="block"
+return
+}else empty.style.display="none"
+
+list.forEach((p,i)=>{
+
+box.innerHTML+=`
+
+<div class="product">
+
+<img src="${p.img}" onclick="quickView(${i})">
+
 <h3>${p.name}</h3>
-<p>${p.brand}</p>
+
 <p>₹${p.price}</p>
-<p>${p.description}</p>
-<label>Quantity:</label>
-<input type="number" value="1" min="1" max="8" id="qty-${index}">
-<button onclick="addToCart(${index})" id="btn-${index}">Add to Cart</button>
-</div>`;});
+
+<input type="number" min="1" max="8" value="1" id="q${i}">
+
+<button onclick="addCart(${i})">Add to Cart</button>
+
+</div>
+
+`
+
+})
+
 }
 
-// Add to Cart with Quantity Limit & Toast
-function addToCart(index){
-const qty=parseInt(document.getElementById(`qty-${index}`).value)||1;
-if(qty>8){alert("Out of stock! Max 8 per product."); return;}
-const item={...products[index], quantity:qty};
-const existing=cart.find(p=>p.name===item.name);
-if(existing){existing.quantity=Math.min(existing.quantity+qty,8);} else {cart.push(item);}
 
-// Visual Feedback
-const btn=document.getElementById(`btn-${index}`);
-btn.innerText="Added!";
-setTimeout(()=>btn.innerText="Add to Cart",2000);
+function quickView(i){
 
-showToast();
-updateCart();
+let q=document.getElementById("quickview")
+
+document.getElementById("q-img").src=products[i].img
+document.getElementById("q-name").innerText=products[i].name
+document.getElementById("q-price").innerText="₹"+products[i].price
+
+q.style.display="flex"
+
 }
+
+function closeQuick(){
+
+document.getElementById("quickview").style.display="none"
+
+}
+
+
+function addCart(i){
+
+let qty=parseInt(document.getElementById("q"+i).value)
+
+if(qty>8){
+alert("Out of Stocks")
+return
+}
+
+cart.push({...products[i],qty})
+
+updateCart()
+
+toast()
+
+}
+
 
 function updateCart(){
-const items=document.getElementById("cart-items");
-let total=0; items.innerHTML="";
-cart.forEach(p=>{
-items.innerHTML+=`<p>${p.name} x${p.quantity} - ₹${p.price*p.quantity}</p>`;
-total+=p.price*p.quantity;
-});
-document.getElementById("cart-count").innerText=cart.reduce((a,b)=>a+b.quantity,0);
-document.getElementById("total-price").innerText="Total: ₹"+total;
+
+let box=document.getElementById("cart-items")
+
+let total=0
+
+box.innerHTML=""
+
+cart.forEach((p,i)=>{
+
+box.innerHTML+=`
+
+<div class="cart-item">
+
+${p.name}
+
+<div class="qty">
+
+<button onclick="dec(${i})">-</button>
+
+${p.qty}
+
+<button onclick="inc(${i})">+</button>
+
+</div>
+
+<p>₹${p.price*p.qty}</p>
+
+<button onclick="removeItem(${i})">Remove</button>
+
+</div>
+
+`
+
+total+=p.price*p.qty
+
+})
+
+document.getElementById("total").innerText="Total ₹"+total
+document.getElementById("cart-count").innerText=cart.length
+
 }
 
-function toggleCart(){document.getElementById("cart-slider").classList.toggle("open");}
-function showToast(){const toast=document.getElementById("toast");toast.style.display="block";setTimeout(()=>toast.style.display="none",2000);}
-function searchProducts(){let value=document.getElementById("search").value.toLowerCase();displayProducts(products.filter(p=>p.name.toLowerCase().includes(value)));}
-function filterBrand(brand){displayProducts(products.filter(p=>p.brand===brand));}
-function sortProducts(type){let sorted=[...products];if(type==="low"){sorted.sort((a,b)=>a.price-b.price);}if(type==="high"){sorted.sort((a,b)=>b.price-a.price);}displayProducts(sorted);}
-function toggleDarkMode(){document.body.classList.toggle("dark");}
-function checkout(){alert("Order placed successfully!");cart=[];updateCart();}
-function scrollToProducts(){document.getElementById("products").scrollIntoView({behavior:"smooth"});}
-displayProducts(products);
-updateCart();
+
+function inc(i){
+
+if(cart[i].qty>=8){
+alert("Out of Stocks")
+return
+}
+
+cart[i].qty++
+
+updateCart()
+
+}
+
+function dec(i){
+
+if(cart[i].qty>1) cart[i].qty--
+
+updateCart()
+
+}
+
+
+function removeItem(i){
+
+cart.splice(i,1)
+
+updateCart()
+
+}
+
+
+function toggleCart(){
+
+document.getElementById("cart").classList.toggle("open")
+
+}
+
+
+function toast(){
+
+let t=document.getElementById("toast")
+
+t.style.display="block"
+
+setTimeout(()=>t.style.display="none",2000)
+
+}
+
+
+function searchProducts(){
+
+let val=document.getElementById("search").value.toLowerCase()
+
+let f=products.filter(p=>p.name.toLowerCase().includes(val))
+
+showProducts(f)
+
+}
+function filterBrand(b){
+showProducts(products.filter(p=>p.brand===b))
+}
+function sortProducts(t){
+let arr=[...products]
+if(t==="low") arr.sort((a,b)=>a.price-b.price)
+if(t==="high") arr.sort((a,b)=>b.price-a.price)
+showProducts(arr)
+}
+function scrollToProducts(){
+document.getElementById("products").scrollIntoView({behavior:"smooth"})
+}
+window.onload=function(){
+setTimeout(()=>{
+document.getElementById("loader").style.display="none"
+},1000)
+}
+showProducts(products)
 
 
 
