@@ -37,7 +37,10 @@ text-align:center;
 .main-content{display:flex; padding:20px; gap:20px;}
 .sidebar{flex:0 0 180px; background:#f0f0f0; padding:15px; border-radius:10px; height:max-content;}
 .brand-filters{display:flex; flex-direction:column; gap:10px;}
-.brand-filters button{padding:8px 12px; border:none; border-radius:6px; background:#333; color:white; cursor:pointer;}
+.brand-filters button{
+padding:8px 12px; border:none; border-radius:6px; background:#333; color:white; cursor:pointer; transition:0.3s;
+}
+.brand-filters button:hover{background:#ff416c;}
 
 .products{
 display:grid;
@@ -97,7 +100,7 @@ footer .social-icons span{margin:0 5px; cursor:pointer;}
 
 @media(max-width:1024px){
 .main-content{flex-direction:column;}
-.sidebar{flex:1; order:2;}
+.sidebar{flex-direction:row; overflow-x:auto; gap:10px;}
 .products{order:1;}
 }
 
