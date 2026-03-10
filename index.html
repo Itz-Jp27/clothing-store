@@ -4,40 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JP Clothing Store</title>
+<link rel="icon" href="favicon.ico">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
+<div class="header-left">
 <h1>JP Fashion Store</h1>
+</div>
 
+<div class="header-center">
 <input type="text" id="search" placeholder="Search products..." onkeyup="searchProducts()">
 
-<select onchange="filterBrand(this.value)">
-<option value="all">All Brands</option>
-<option value="Nike">Nike</option>
-<option value="Adidas">Adidas</option>
-<option value="Puma">Puma</option>
-<option value="Zara">Zara</option>
-<option value="H&M">H&M</option>
-<option value="Allen Solly">Allen Solly</option>
-<option value="Max">Max</option>
-<option value="Snitch">Snitch</option>
-<option value="Louis Philippe">Louis Philippe</option>
-<option value="Trends">Trends</option>
-</select>
+<div class="brand-filters" id="brand-filters"></div>
 
 <select onchange="sortProducts(this.value)">
 <option value="default">Sort</option>
 <option value="low">Price Low → High</option>
 <option value="high">Price High → Low</option>
 </select>
+</div>
 
+<div class="header-right">
 <button onclick="toggleDarkMode()">🌙</button>
-
-<div onclick="toggleCart()" class="cart-icon">
-🛒 Cart <span id="cart-count">0</span>
+<div onclick="toggleCart()" class="cart-icon">🛒 <span id="cart-count">0</span></div>
 </div>
 </header>
 
@@ -48,6 +40,8 @@
 </section>
 
 <section id="products" class="products"></section>
+
+<div id="empty-state">No products found in this category.</div>
 
 <div id="cart-slider" class="cart-slider">
 <div class="cart-header">
@@ -60,6 +54,16 @@
 </div>
 
 <div id="toast">Added to cart</div>
+
+<footer>
+<div class="footer-content">
+<p>Contact Us: info@jpstore.com</p>
+<div class="social-icons">
+<span>🐦</span> <span>📘</span> <span>📸</span>
+</div>
+<p>© 2026 JP Clothing Store</p>
+</div>
+</footer>
 
 <script src="script.js"></script>
 </body>
