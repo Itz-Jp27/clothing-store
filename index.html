@@ -1,75 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>JP Clothing Store</title>
-<link rel="icon" href="favicon.ico">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
+<div id="loader">
+Loading Store...
+</div>
+
 <header>
-<div class="header-left">
-<h1>JP Fashion Store</h1>
+
+<h2 class="logo">JP Fashion</h2>
+
+<div class="search">
+<input id="search" placeholder="Search products..." onkeyup="searchProducts()">
 </div>
 
-<div class="header-center">
-<input type="text" id="search" placeholder="Search products..." onkeyup="searchProducts()">
-<select onchange="sortProducts(this.value)">
-<option value="default">Sort by</option>
-<option value="low">Price: Low → High</option>
-<option value="high">Price: High → Low</option>
-</select>
+<div class="cart-icon" onclick="toggleCart()">
+🛒 <span id="cart-count">0</span>
 </div>
 
-<div class="header-right">
-<button onclick="toggleDarkMode()">🌙</button>
-<div onclick="toggleCart()" class="cart-icon">🛒 <span id="cart-count">0</span></div>
-</div>
 </header>
 
+
 <section class="hero">
-<h2>Discover Your Style</h2>
-<p>Top brands. Best prices. New arrivals.</p>
+<h1>Discover Your Style</h1>
 <button onclick="scrollToProducts()">Shop Now</button>
 </section>
 
-<div class="main-content">
+
+<div class="layout">
+
 <aside class="sidebar">
+
+<select onchange="sortProducts(this.value)">
+<option value="">Sort By</option>
+<option value="low">Price Low → High</option>
+<option value="high">Price High → Low</option>
+</select>
+
 <h3>Brands</h3>
-<div class="brand-filters" id="brand-filters"></div>
+
+<div id="brand-filters"></div>
+
 </aside>
 
-<section id="products" class="products"></section>
+
+<section class="products" id="products"></section>
+
 </div>
 
-<div id="empty-state" style="display:none; text-align:center; margin:20px; font-size:18px; color:#555;">No products found</div>
 
-<div id="cart-slider" class="cart-slider">
-<div class="cart-header">
+<p id="empty">No products found</p>
+
+
+<div class="cart-slider" id="cart">
+
 <h2>Your Cart</h2>
-<button onclick="toggleCart()">✖</button>
-</div>
+
 <div id="cart-items"></div>
-<h3 id="total-price">Total: ₹0</h3>
-<button onclick="checkout()">Checkout</button>
-<button onclick="toggleCart()">Back to Shop</button>
+
+<h3 id="total">Total ₹0</h3>
+
+<a href="checkout.html">
+<button class="checkout">Checkout</button>
+</a>
+
 </div>
 
-<div id="toast">Added to Cart!</div>
 
-<footer>
-<div class="footer-content">
-<p>Contact Us: info@jpstore.com</p>
-<div class="social-icons">
-<span>🐦</span> <span>📘</span> <span>📸</span>
+<div id="toast">Added to Cart</div>
+
+
+<div class="quick-view" id="quickview">
+
+<div class="quick-box">
+
+<img id="q-img">
+
+<h2 id="q-name"></h2>
+
+<p id="q-price"></p>
+
+<button onclick="closeQuick()">Close</button>
+
 </div>
-<p>© 2026 JP Clothing Store</p>
+
 </div>
-</footer>
+
 
 <script src="script.js"></script>
+
 </body>
 </html>
