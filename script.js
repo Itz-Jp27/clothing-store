@@ -10,7 +10,7 @@ let products=[
 {name:"Adidas Shorts",brand:"Adidas",price:1299,image:"https://www.pngkey.com/maxpic/u2y3w7e6u2w7e6r5/"},
 {name:"Adidas Cap",brand:"Adidas",price:699,image:"https://assets.adidas.com/images/w_600,f_auto,q_auto/7f741ee400734272aa6c91263c9aca65_faec/New_Logo_Baseball_Cap_Red_JP0396_db01_00_standard.tiff.jpg"},
 {name:"Puma Hoodie",brand:"Puma",price:2499,image:"https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_600,h_600/global/682573/82/fnd/IND/fmt/png/Essentials-No.-1-Logo-Men's-Rubber-Print-Hoodie"},
-{name:"Puma T-Shirt",brand:"Puma",price:1499,image:"https://in.puma.com/in/en/pd/mens-essentials-small-logo-cotton-t-shirt/851741?srsltid=AfmBOopffOl0s28LqkT0OiPXbUTCOTotZeI3LTLc73cWUv-PduanALgZ""},
+{name:"Puma T-Shirt",brand:"Puma",price:1499,image:"https://in.puma.com/in/en/pd/mens-essentials-small-logo-cotton-t-shirt/851741?srsltid=AfmBOopffOl0s28LqkT0OiPXbUTCOTotZeI3LTLc73cWUv-PduanALgZ"},
 {name:"Puma Sneakers",brand:"Puma",price:2999,image:"https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_600,h_600/global/395022/01/sv01/fnd/IND/fmt/png/Park-Lifestyle-Sneakers"},
 {name:"Puma Shorts",brand:"Puma",price:1299,image:"https://in.puma.com/in/en/pd/mens-10-shorts/682598?srsltid=AfmBOopP9izSxb7HfqTzJ_lo2vc4fXlhWFQZUsfV8Ea_BMjqmhsTSD8a"},
 {name:"Puma Cap",brand:"Puma",price:699,image:"https://vn.puma.com/vn/en/pd/essentials-no.-1-logo-patch-baseball-cap/025997.html"},
