@@ -39,12 +39,13 @@
 <button onclick="scrollToProducts()">Shop Now</button>
 </section>
 
-<!-- Trending Button -->
-<div style="padding:15px;">
-<button onclick="showTrending()">🔥 Trending</button>
-</div>
+<!-- ✅ RECOMMENDATIONS BELOW HERO -->
+<section class="recommend-section">
+<h2>Recommended for You</h2>
+<div class="products" id="recommendations"></div>
+</section>
 
-<!-- Main Layout -->
+<!-- Layout -->
 <div class="layout">
 
 <!-- Sidebar -->
@@ -56,48 +57,34 @@
 <option value="high">Price High → Low</option>
 </select>
 
+<button onclick="showTrending()">🔥 Trending</button>
+
 <h3>Brands</h3>
 <div id="brand-filters"></div>
 
 </aside>
 
-<!-- MAIN CONTENT -->
-<div class="main-content">
-
 <!-- Products -->
-<section id="products" class="products"></section>
-
-<!-- Recommendations -->
-<section class="recommend-section">
-<h2>Recommended for You</h2>
-<div id="recommendations" class="products"></div>
-</section>
+<section class="products" id="products"></section>
 
 </div>
 
-</div>
-
-<!-- No Products -->
-<p id="empty" style="display:none;text-align:center;margin-top:20px;">
-No products found
-</p>
+<!-- Empty -->
+<p id="empty">No products found</p>
 
 <!-- Cart -->
 <div class="cart-slider" id="cart">
-
 <div style="display:flex;justify-content:space-between;">
 <h2>Your Cart</h2>
 <button onclick="toggleCart()">✖</button>
 </div>
 
 <div id="cart-items"></div>
-
 <h3 id="total">Total ₹0</h3>
 
 <a href="checkout.html">
 <button class="checkout">Proceed To Checkout</button>
 </a>
-
 </div>
 
 <!-- Toast -->
@@ -106,17 +93,14 @@ No products found
 <!-- Quick View -->
 <div class="quick-view" id="quickview">
 <div class="quick-box">
-
 <img id="q-img">
 <h2 id="q-name"></h2>
 <p id="q-price"></p>
-
 <button onclick="closeQuick()">Close</button>
-
 </div>
 </div>
 
-<script src="script.js" defer></script>
+<script src="script.js"></script>
 
 </body>
 </html>
