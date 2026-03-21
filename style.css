@@ -5,7 +5,6 @@ background:#f5f5f5;
 }
 
 /* Loader */
-
 #loader{
 position:fixed;
 width:100%;
@@ -19,7 +18,6 @@ z-index:2000;
 }
 
 /* Header */
-
 header{
 display:flex;
 justify-content:space-between;
@@ -33,8 +31,9 @@ z-index:1000;
 }
 
 .logo{
-height:140px;
+height:40px;
 }
+
 .search{
 flex:1;
 display:flex;
@@ -55,8 +54,13 @@ cursor:pointer;
 font-size:18px;
 }
 
-/* Hero */
+#empty{
+display:none;
+text-align:center;
+margin-top:20px;
+}
 
+/* Hero */
 .hero{
 background:linear-gradient(45deg,#ff4b2b,#ff416c);
 color:white;
@@ -71,7 +75,6 @@ font-size:32px;
 
 .hero p{
 margin-top:10px;
-font-size:16px;
 }
 
 .hero button{
@@ -85,15 +88,13 @@ cursor:pointer;
 }
 
 /* Layout */
-
 .layout{
 display:flex;
-padding:25px;
 gap:25px;
+padding:25px;
 }
 
 /* Sidebar */
-
 .sidebar{
 width:220px;
 background:white;
@@ -122,17 +123,26 @@ cursor:pointer;
 background:black;
 }
 
-/* Products Grid */
-
-.products{
+/* MAIN CONTENT */
+.main-content{
 flex:1;
+display:flex;
+flex-direction:column;
+}
+
+/* PRODUCTS GRID */
+.products{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:25px;
 }
 
-/* Product Card */
+/* RECOMMEND SECTION */
+.recommend-section{
+margin-top:40px;
+}
 
+/* Product Card */
 .product{
 background:white;
 padding:15px;
@@ -182,8 +192,7 @@ cursor:pointer;
 background:#333;
 }
 
-/* Cart Slider */
-
+/* Cart */
 .cart-slider{
 position:fixed;
 right:-380px;
@@ -202,10 +211,6 @@ z-index:1500;
 right:0;
 }
 
-.cart-slider h2{
-margin-top:0;
-}
-
 .cart-item{
 background:#f1f1f1;
 padding:10px;
@@ -213,13 +218,7 @@ margin-bottom:10px;
 border-radius:8px;
 }
 
-.cart-item button{
-margin-top:5px;
-padding:6px 10px;
-}
-
-/* Quantity Buttons */
-
+/* Qty */
 .qty{
 display:flex;
 gap:10px;
@@ -227,12 +226,7 @@ justify-content:center;
 margin-top:5px;
 }
 
-.qty button{
-padding:4px 10px;
-}
-
 /* Quick View */
-
 .quick-view{
 position:fixed;
 top:0;
@@ -255,7 +249,6 @@ width:300px;
 }
 
 /* Toast */
-
 #toast{
 position:fixed;
 bottom:20px;
@@ -266,12 +259,10 @@ color:white;
 padding:12px 20px;
 border-radius:8px;
 display:none;
-font-weight:500;
 z-index:3000;
 }
 
-/* Mobile */
-
+/* ✅ MOBILE FIX */
 @media(max-width:768px){
 
 .layout{
@@ -303,8 +294,8 @@ gap:15px;
 height:160px;
 }
 
+.recommend-section{
+padding:10px;
 }
 
-
-
-
+}
