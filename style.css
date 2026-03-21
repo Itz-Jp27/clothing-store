@@ -54,12 +54,6 @@ cursor:pointer;
 font-size:18px;
 }
 
-#empty{
-display:none;
-text-align:center;
-margin-top:20px;
-}
-
 /* Hero */
 .hero{
 background:linear-gradient(45deg,#ff4b2b,#ff416c);
@@ -71,10 +65,6 @@ padding:60px 20px;
 .hero h1{
 margin:0;
 font-size:32px;
-}
-
-.hero p{
-margin-top:10px;
 }
 
 .hero button{
@@ -90,8 +80,8 @@ cursor:pointer;
 /* Layout */
 .layout{
 display:flex;
-gap:25px;
 padding:25px;
+gap:25px;
 }
 
 /* Sidebar */
@@ -101,10 +91,6 @@ background:white;
 padding:15px;
 border-radius:10px;
 box-shadow:0 3px 10px rgba(0,0,0,0.08);
-}
-
-.sidebar h3{
-margin-top:0;
 }
 
 .sidebar button{
@@ -119,27 +105,12 @@ border-radius:6px;
 cursor:pointer;
 }
 
-.sidebar button:hover{
-background:black;
-}
-
-/* MAIN CONTENT */
-.main-content{
-flex:1;
-display:flex;
-flex-direction:column;
-}
-
-/* PRODUCTS GRID */
+/* Products */
 .products{
+flex:1;
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:25px;
-}
-
-/* RECOMMEND SECTION */
-.recommend-section{
-margin-top:40px;
 }
 
 /* Product Card */
@@ -161,25 +132,11 @@ width:100%;
 height:220px;
 object-fit:cover;
 border-radius:10px;
-margin-bottom:10px;
-}
-
-.product h3{
-margin:5px 0;
-}
-
-.product p{
-margin:5px 0;
-font-weight:500;
-}
-
-.product input{
-width:60px;
-padding:5px;
-margin-right:5px;
+cursor:pointer;
 }
 
 .product button{
+margin-top:5px;
 padding:7px 12px;
 border:none;
 background:black;
@@ -188,8 +145,17 @@ border-radius:5px;
 cursor:pointer;
 }
 
-.product button:hover{
-background:#333;
+/* Recommendation Section */
+.recommend-section{
+margin:30px 20px;
+padding:20px;
+background:white;
+border-radius:12px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+.recommend-section h2{
+margin-bottom:15px;
 }
 
 /* Cart */
@@ -201,29 +167,12 @@ height:100%;
 width:350px;
 background:white;
 padding:20px;
-box-shadow:-3px 0 12px rgba(0,0,0,0.2);
 transition:.3s;
-overflow-y:auto;
 z-index:1500;
 }
 
 .cart-slider.open{
 right:0;
-}
-
-.cart-item{
-background:#f1f1f1;
-padding:10px;
-margin-bottom:10px;
-border-radius:8px;
-}
-
-/* Qty */
-.qty{
-display:flex;
-gap:10px;
-justify-content:center;
-margin-top:5px;
 }
 
 /* Quick View */
@@ -244,8 +193,8 @@ z-index:2000;
 background:white;
 padding:25px;
 border-radius:12px;
-text-align:center;
 width:300px;
+text-align:center;
 }
 
 /* Toast */
@@ -259,10 +208,16 @@ color:white;
 padding:12px 20px;
 border-radius:8px;
 display:none;
-z-index:3000;
 }
 
-/* ✅ MOBILE FIX */
+/* Empty */
+#empty{
+display:none;
+text-align:center;
+margin-top:20px;
+}
+
+/* MOBILE */
 @media(max-width:768px){
 
 .layout{
@@ -277,25 +232,13 @@ overflow-x:auto;
 gap:10px;
 }
 
-.sidebar button{
-min-width:120px;
-}
-
-.search input{
-width:100%;
-}
-
 .products{
 grid-template-columns:repeat(2,1fr);
 gap:15px;
 }
 
 .product img{
-height:160px;
-}
-
-.recommend-section{
-padding:10px;
+height:150px;
 }
 
 }
