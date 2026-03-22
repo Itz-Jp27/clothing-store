@@ -3,6 +3,7 @@ body{
 font-family:Poppins;
 margin:0;
 background:#f1f3f6;
+transition:0.3s;
 }
 
 /* DARK MODE */
@@ -33,10 +34,12 @@ justify-content:space-between;
 align-items:center;
 padding:15px 20px;
 background:rgba(0,0,0,0.85);
+backdrop-filter:blur(8px);
 color:white;
 position:sticky;
 top:0;
 z-index:1000;
+gap:10px;
 }
 
 .logo{height:40px;}
@@ -53,6 +56,7 @@ border-radius:25px;
 border:none;
 width:350px;
 max-width:90%;
+outline:none;
 }
 
 /* ================= HERO ================= */
@@ -63,9 +67,27 @@ background:linear-gradient(135deg,#ff416c,#ff4b2b);
 color:white;
 }
 
+.hero button{
+margin-top:15px;
+padding:10px 20px;
+border:none;
+border-radius:20px;
+background:black;
+color:white;
+cursor:pointer;
+}
+
 /* ================= RECOMMEND ================= */
 .recommend-section{
+margin:20px;
 padding:20px;
+background:white;
+border-radius:12px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+body.dark .recommend-section{
+background:#1e1e1e;
 }
 
 /* ================= LAYOUT ================= */
@@ -73,6 +95,7 @@ padding:20px;
 display:flex;
 gap:20px;
 padding:20px;
+align-items:flex-start;
 }
 
 /* SIDEBAR */
@@ -81,19 +104,34 @@ width:220px;
 background:white;
 padding:15px;
 border-radius:10px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
 }
 
 body.dark .sidebar{
 background:#1e1e1e;
 }
 
-/* MAIN CONTENT */
-.main-content{
-flex:1;
+/* 🔥 FILTER BUTTONS FIX */
+.sidebar button{
+display:block;
+width:100%;
+margin:6px 0;
+padding:8px;
+border:none;
+background:#111;
+color:white;
+border-radius:6px;
+cursor:pointer;
+transition:0.2s;
+}
+
+.sidebar button:hover{
+background:#333;
 }
 
 /* ================= GRID ================= */
 .products{
+flex:1;
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:20px;
@@ -106,10 +144,17 @@ padding:15px;
 border-radius:12px;
 text-align:center;
 transition:0.3s;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+body.dark .product{
+background:#1e1e1e;
+color:white;
 }
 
 .product:hover{
-transform:translateY(-5px);
+transform:translateY(-6px);
+box-shadow:0 10px 20px rgba(0,0,0,0.15);
 }
 
 .product img{
@@ -141,10 +186,17 @@ background:white;
 transition:0.3s;
 padding:20px;
 z-index:2000;
+overflow-y:auto; /* 🔥 FIX */
+box-shadow:-5px 0 20px rgba(0,0,0,0.2);
 }
 
 .cart-slider.open{
 right:0;
+}
+
+body.dark .cart-slider{
+background:#1e1e1e;
+color:white;
 }
 
 /* ================= QUICK VIEW ================= */
@@ -166,6 +218,12 @@ background:white;
 padding:20px;
 border-radius:10px;
 width:300px;
+text-align:center;
+}
+
+body.dark .quick-box{
+background:#1e1e1e;
+color:white;
 }
 
 /* ================= TOAST ================= */
@@ -181,31 +239,50 @@ border-radius:8px;
 display:none;
 }
 
+/* ================= EMPTY ================= */
+#empty{
+text-align:center;
+margin-top:20px;
+display:none;
+}
+
 /* ================= MOBILE ================= */
 @media(max-width:768px){
 
 .layout{
 flex-direction:column;
+padding:10px;
 }
 
-/* 🔥 AMAZON STYLE FILTER BAR */
+/* 🔥 AMAZON STYLE FILTER BAR (IMPROVED) */
 .sidebar{
 width:100%;
 display:flex;
 overflow-x:auto;
 gap:10px;
+padding:10px;
 }
 
 .sidebar button{
-min-width:100px;
+min-width:110px;
+white-space:nowrap;
 }
 
 .products{
 grid-template-columns:repeat(2,1fr);
+gap:15px;
 }
 
 .search input{
 width:100%;
+}
+
+.hero{
+padding:50px 15px;
+}
+
+.hero h1{
+font-size:24px;
 }
 
 }
