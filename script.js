@@ -39,30 +39,33 @@ let products=[
 {name:"Trends Jeans",brand:"Trends",price:2399,image:"https://images.unsplash.com/photo-1600185364135-3c8d7b2f1a2d",description:"Denim jeans"}
 ];
 // ================= GLOBAL =================
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let cart = [];
 let clicks = {};
+let currentList = [...products];
 
 // ================= INIT =================
 window.onload = () => {
-setTimeout(()=>{
-let loader = document.getElementById("loader");
-if(loader) loader.style.display = "none";
-},500);
+document.getElementById("loader").style.display = "none";
 
 initBrands();
 showProducts(products);
 loadDefaultRecommendations();
-updateCart();
+
+// close cart if click outside
+document.addEventListener("click", function(e){
+let cartBox = document.getElementById("cart");
+if(!cartBox.contains(e.target) && !e.target.closest(".cart-icon")){
+cartBox.classList.remove("open");
+}
+});
 };
 
 // ================= BRAND FILTER =================
 function initBrands(){
 let box = document.getElementById("brand-filters");
-if(!box) return;
-
 let brands = [...new Set(products.map(p=>p.brand))];
 
-box.innerHTML = `<button onclick="showProducts(products)">All</button>`;
+box.innerHTML = "";
 
 brands.forEach(b=>{
 let btn = document.createElement("button");
@@ -74,6 +77,8 @@ box.appendChild(btn);
 
 // ================= SHOW PRODUCTS =================
 function showProducts(list){
+currentList = list;
+
 let box = document.getElementById("products");
 let empty = document.getElementById("empty");
 
@@ -82,37 +87,33 @@ box.innerHTML = "";
 if(list.length === 0){
 empty.style.display = "block";
 return;
-}else{
-empty.style.display = "none";
-}
+}else empty.style.display = "none";
 
 list.forEach(p=>{
-let index = products.findIndex(x => x.name === p.name);
+let i = products.findIndex(x=>x.name===p.name);
 
 box.innerHTML += `
 <div class="product">
-<img src="${p.image}" onclick="quickView(${index})">
+<img src="${p.image}" onclick="quickView(${i})">
 <h3>${p.name}</h3>
 <p>₹${p.price}</p>
 
 <div class="qty-box">
-<button onclick="changeQty(${index},-1)">-</button>
-<input type="number" value="1" min="1" max="8" id="q${index}">
-<button onclick="changeQty(${index},1)">+</button>
+<button onclick="changeQty(${i}, -1)">-</button>
+<input type="number" value="1" min="1" max="8" id="q${i}">
+<button onclick="changeQty(${i}, 1)">+</button>
 </div>
 
-<button onclick="addCart(${index})">Add to Cart</button>
+<button onclick="addCart(${i})">Add to Cart</button>
 </div>
 `;
 });
 }
 
-// ================= CHANGE QTY =================
-function changeQty(i,change){
+// ================= QUANTITY =================
+function changeQty(i, change){
 let input = document.getElementById("q"+i);
-let val = parseInt(input.value) || 1;
-
-val += change;
+let val = parseInt(input.value) + change;
 
 if(val < 1) val = 1;
 if(val > 8) val = 8;
@@ -134,17 +135,26 @@ trackClick(p.name);
 showRecommendations(p);
 }
 
-// ================= CLOSE QUICK =================
+// CLOSE quick view (click outside also)
+document.addEventListener("click", function(e){
+let box = document.querySelector(".quick-box");
+let modal = document.getElementById("quickview");
+
+if(modal.style.display === "flex" && !box.contains(e.target)){
+modal.style.display = "none";
+}
+});
+
 function closeQuick(){
 document.getElementById("quickview").style.display = "none";
 }
 
 // ================= CART =================
 function addCart(i){
-let qty = parseInt(document.getElementById("q"+i).value);
+let qty = parseInt(document.getElementById("q"+i)?.value || 1);
 let p = products[i];
 
-let existing = cart.find(x => x.name === p.name);
+let existing = cart.find(x=>x.name===p.name);
 
 if(existing){
 existing.qty += qty;
@@ -153,12 +163,11 @@ if(existing.qty > 8) existing.qty = 8;
 cart.push({...p, qty});
 }
 
-saveCart();
 updateCart();
 toast();
 }
 
-// ================= UPDATE CART =================
+// UPDATE CART UI
 function updateCart(){
 let box = document.getElementById("cart-items");
 let total = 0;
@@ -169,18 +178,16 @@ cart.forEach((p,i)=>{
 box.innerHTML += `
 <div class="cart-item">
 <b>${p.name}</b>
-
-<div class="cart-controls">
-<button onclick="updateQty(${i},-1)">-</button>
+<div class="qty-box">
+<button onclick="cartQty(${i}, -1)">-</button>
 <span>${p.qty}</span>
-<button onclick="updateQty(${i},1)">+</button>
+<button onclick="cartQty(${i}, 1)">+</button>
 </div>
-
 <p>₹${p.price * p.qty}</p>
-
-<button onclick="removeItem(${i})">❌</button>
+<button onclick="removeItem(${i})">Remove</button>
 </div>
 `;
+
 total += p.price * p.qty;
 });
 
@@ -188,49 +195,31 @@ document.getElementById("total").innerText = "Total ₹"+total;
 document.getElementById("cart-count").innerText = cart.length;
 }
 
-// ================= UPDATE QTY IN CART =================
-function updateQty(i,change){
-let item = cart[i];
+// CART QTY CHANGE
+function cartQty(i, change){
+cart[i].qty += change;
 
-item.qty += change;
+if(cart[i].qty < 1) cart[i].qty = 1;
+if(cart[i].qty > 8) cart[i].qty = 8;
 
-if(item.qty < 1){
-cart.splice(i,1);
-}else if(item.qty > 8){
-item.qty = 8;
-}
-
-saveCart();
 updateCart();
 }
 
-// ================= REMOVE =================
 function removeItem(i){
 cart.splice(i,1);
-saveCart();
 updateCart();
-}
-
-// ================= SAVE =================
-function saveCart(){
-localStorage.setItem("cart", JSON.stringify(cart));
 }
 
 // ================= CART TOGGLE =================
 function toggleCart(){
-let cartBox = document.getElementById("cart");
-let overlay = document.getElementById("overlay");
-
-cartBox.classList.toggle("open");
-
-overlay.style.display = cartBox.classList.contains("open") ? "block" : "none";
+document.getElementById("cart").classList.toggle("open");
 }
 
 // ================= TOAST =================
 function toast(){
 let t = document.getElementById("toast");
 t.style.display="block";
-setTimeout(()=>t.style.display="none",2000);
+setTimeout(()=>t.style.display="none",1500);
 }
 
 // ================= SEARCH =================
@@ -247,15 +236,15 @@ showProducts(filtered);
 
 // ================= FILTER =================
 function filterBrand(b){
-showProducts(products.filter(p => p.brand === b));
+showProducts(products.filter(p=>p.brand===b));
 }
 
 // ================= SORT =================
 function sortProducts(type){
-let arr = [...products];
+let arr = [...currentList];
 
-if(type === "low") arr.sort((a,b)=>a.price-b.price);
-if(type === "high") arr.sort((a,b)=>b.price-a.price);
+if(type==="low") arr.sort((a,b)=>a.price-b.price);
+if(type==="high") arr.sort((a,b)=>b.price-a.price);
 
 showProducts(arr);
 }
@@ -265,50 +254,67 @@ function scrollToProducts(){
 document.getElementById("products").scrollIntoView({behavior:"smooth"});
 }
 
-// ================= ML (SMART RECOMMEND) =================
+// ================= SMART RECOMMEND =================
 function trackClick(name){
 clicks[name] = (clicks[name] || 0) + 1;
 }
 
-function getRecommendations(){
-let sorted = Object.entries(clicks).sort((a,b)=>b[1]-a[1]);
+function getRecommendations(product){
+let sorted = [...products].sort((a,b)=>
+(clicks[b.name]||0)-(clicks[a.name]||0)
+);
 
-if(sorted.length === 0){
-return [...products].sort(()=>0.5 - Math.random()).slice(0,6);
-}
-
-let fav = sorted[0][0];
-
-let favProduct = products.find(p=>p.name === fav);
-
-return products.filter(p =>
-p.brand === favProduct.brand && p.name !== favProduct.name
-).slice(0,6);
-}
-
-function showRecommendations(product){
-let rec = products.filter(p =>
+let sameBrand = products.filter(p =>
 p.brand === product.brand && p.name !== product.name
-).slice(0,6);
+);
 
-renderRecommendations(rec);
+return [...sameBrand, ...sorted].slice(0,4);
 }
 
-function loadDefaultRecommendations(){
-renderRecommendations(getRecommendations());
-}
-
-function renderRecommendations(list){
+// SHOW RECOMMENDATIONS (🔥 FIXED ADD CART)
+function showRecommendations(product){
+let rec = getRecommendations(product);
 let box = document.getElementById("recommendations");
 
 box.innerHTML = "";
 
-list.forEach(p=>{
+rec.forEach(p=>{
+let i = products.findIndex(x=>x.name===p.name);
+
 box.innerHTML += `
 <div class="product">
-<img src="${p.image}">
+<img src="${p.image}" onclick="quickView(${i})">
 <h3>${p.name}</h3>
 <p>₹${p.price}</p>
+
+<div class="qty-box">
+<button onclick="changeQty(${i}, -1)">-</button>
+<input type="number" value="1" min="1" max="8" id="q${i}">
+<button onclick="changeQty(${i}, 1)">+</button>
+</div>
+
+<button onclick="addCart(${i})">Add to Cart</button>
+</div>
+`;
+});
+}
+
+// DEFAULT RECOMMEND
+function loadDefaultRecommendations(){
+let box = document.getElementById("recommendations");
+
+box.innerHTML = "";
+
+products.slice(0,4).forEach(p=>{
+let i = products.findIndex(x=>x.name===p.name);
+
+box.innerHTML += `
+<div class="product">
+<img src="${p.image}" onclick="quickView(${i})">
+<h3>${p.name}</h3>
+<p>₹${p.price}</p>
+
+<button onclick="addCart(${i})">Add to Cart</button>
 </div>
 `;
 });
