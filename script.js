@@ -38,115 +38,168 @@ let products=[
 {name:"Trends T-Shirt",brand:"Trends",price:1299,image:"https://images.unsplash.com/photo-1600185364095-2c7f8b1d2e3f",description:"Casual tee"},
 {name:"Trends Jeans",brand:"Trends",price:2399,image:"https://images.unsplash.com/photo-1600185364135-3c8d7b2f1a2d",description:"Denim jeans"}
 ];
+// ================= GLOBAL =================
+let cart = [];
+let clicks = {};
 
-// GLOBAL
-let cart = []
-let clicks = {}
-
-// SHOW PRODUCTS
+// ================= SHOW PRODUCTS =================
 function showProducts(list){
-let box = document.getElementById("products")
-box.innerHTML=""
+let box = document.getElementById("products");
+if(!box) return;
 
-list.forEach(p=>{
+box.innerHTML = "";
+
+list.forEach((p,i)=>{
 box.innerHTML += `
 <div class="product">
-<img src="${p.image}" onclick='quickView(${JSON.stringify(p)})'>
+<img src="${p.image}" onclick="quickView(${i})">
 <h3>${p.name}</h3>
 <p>₹${p.price}</p>
-<button onclick='addCart(${JSON.stringify(p)})'>Add</button>
-</div>`
-})
+<input type="number" value="1" min="1" max="8" id="q${i}">
+<button onclick="addCart(${i})">Add to Cart</button>
+</div>
+`;
+});
 }
 
-// QUICK VIEW
-function quickView(p){
-document.getElementById("q-img").src=p.image
-document.getElementById("q-name").innerText=p.name
-document.getElementById("q-price").innerText="₹"+p.price
-document.getElementById("quickview").style.display="flex"
+// ================= QUICK VIEW =================
+function quickView(i){
+let p = products[i];
 
-trackClick(p.name)
-showRecommendations(p)
+document.getElementById("q-img").src = p.image;
+document.getElementById("q-name").innerText = p.name;
+document.getElementById("q-price").innerText = "₹" + p.price;
+
+document.getElementById("quickview").style.display = "flex";
+
+trackClick(p.name);
+showRecommendations(p);
 }
 
-// CLOSE
+// ================= CLOSE QUICK =================
 function closeQuick(){
-document.getElementById("quickview").style.display="none"
+document.getElementById("quickview").style.display = "none";
 }
 
-// CART
-function addCart(p){
-let ex=cart.find(x=>x.name===p.name)
-if(ex) ex.qty++
-else cart.push({...p,qty:1})
-updateCart()
+// ================= CART =================
+function addCart(i){
+let qty = parseInt(document.getElementById("q"+i).value);
+let p = products[i];
+
+let existing = cart.find(x=>x.name===p.name);
+
+if(existing){
+existing.qty += qty;
+}else{
+cart.push({...p, qty});
+}
+
+updateCart();
+toast();
 }
 
 function updateCart(){
-let box=document.getElementById("cart-items")
-let total=0
-box.innerHTML=""
+let box = document.getElementById("cart-items");
+let total = 0;
 
-cart.forEach(p=>{
-box.innerHTML+=`<p>${p.name} x${p.qty}</p>`
-total+=p.price*p.qty
-})
+box.innerHTML = "";
 
-document.getElementById("total").innerText="₹"+total
-document.getElementById("cart-count").innerText=cart.length
+cart.forEach((p,i)=>{
+box.innerHTML += `
+<div class="cart-item">
+<b>${p.name}</b>
+<p>${p.qty} x ₹${p.price}</p>
+<button onclick="removeItem(${i})">Remove</button>
+</div>
+`;
+total += p.price * p.qty;
+});
+
+document.getElementById("total").innerText = "Total ₹"+total;
+document.getElementById("cart-count").innerText = cart.length;
 }
 
-// TOGGLE
+function removeItem(i){
+cart.splice(i,1);
+updateCart();
+}
+
+// ================= UI =================
 function toggleCart(){
-document.getElementById("cart").classList.toggle("open")
+document.getElementById("cart").classList.toggle("open");
 }
 
-// SEARCH
+function toast(){
+let t = document.getElementById("toast");
+t.style.display="block";
+setTimeout(()=>t.style.display="none",2000);
+}
+
+// ================= SEARCH =================
 function searchProducts(){
-let val=document.getElementById("search").value.toLowerCase()
-let f=products.filter(p=>p.name.toLowerCase().includes(val))
-showProducts(f)
+let val = document.getElementById("search").value.toLowerCase();
+
+let filtered = products.filter(p =>
+p.name.toLowerCase().includes(val) ||
+p.brand.toLowerCase().includes(val)
+);
+
+showProducts(filtered);
 }
 
-// ML
+// ================= ML FEATURES =================
 function trackClick(name){
-clicks[name]=(clicks[name]||0)+1
+clicks[name] = (clicks[name] || 0) + 1;
 }
 
-function getRecommendations(p){
-return products.filter(x=>x.brand===p.brand && x.name!==p.name)
+function getRecommendations(product){
+return products.filter(p =>
+p.brand === product.brand && p.name !== product.name
+).slice(0,4);
 }
 
-function showRecommendations(p){
-let box=document.getElementById("recommendations")
-let rec=getRecommendations(p)
+function showRecommendations(product){
+let rec = getRecommendations(product);
+let box = document.getElementById("recommendations");
 
-box.innerHTML=""
-rec.forEach(r=>{
-box.innerHTML+=`
-<div class="product">
-<img src="${r.image}">
-<h3>${r.name}</h3>
-<p>₹${r.price}</p>
-</div>`
-})
-}
+if(!box) return;
 
-// INIT
-window.onload=()=>{
-showProducts(products)
+box.innerHTML = "";
 
-// default rec
-let box=document.getElementById("recommendations")
-products.slice(0,3).forEach(p=>{
-box.innerHTML+=`
+rec.forEach(p=>{
+box.innerHTML += `
 <div class="product">
 <img src="${p.image}">
 <h3>${p.name}</h3>
 <p>₹${p.price}</p>
-</div>`
-})
+</div>
+`;
+});
+}
 
+// ================= DEFAULT RECOMMEND =================
+function loadDefaultRecommendations(){
+let box = document.getElementById("recommendations");
+if(!box) return;
+
+box.innerHTML = "";
+
+products.slice(0,4).forEach(p=>{
+box.innerHTML += `
+<div class="product">
+<img src="${p.image}">
+<h3>${p.name}</h3>
+<p>₹${p.price}</p>
+</div>
+`;
+});
+}
+
+// ================= INIT =================
+window.onload = () => {
+document.getElementById("loader").style.display = "none";
+showProducts(products);
+loadDefaultRecommendations();
+};
 document.getElementById("loader").style.display="none"
 }
