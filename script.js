@@ -49,14 +49,17 @@ if(!box) return;
 
 box.innerHTML = "";
 
-list.forEach((p,i)=>{
+list.forEach(p => {
+
+let realIndex = products.findIndex(x => x.name === p.name);
+
 box.innerHTML += `
 <div class="product">
-<img src="${p.image}" onclick="quickView(${i})">
+<img src="${p.image}" onclick="quickView(${realIndex})">
 <h3>${p.name}</h3>
 <p>₹${p.price}</p>
-<input type="number" value="1" min="1" max="8" id="q${i}">
-<button onclick="addCart(${i})">Add to Cart</button>
+<input type="number" value="1" min="1" max="8" id="q${realIndex}">
+<button onclick="addCart(${realIndex})">Add to Cart</button>
 </div>
 `;
 });
@@ -86,7 +89,7 @@ function addCart(i){
 let qty = parseInt(document.getElementById("q"+i).value);
 let p = products[i];
 
-let existing = cart.find(x=>x.name===p.name);
+let existing = cart.find(x => x.name === p.name);
 
 if(existing){
 existing.qty += qty;
@@ -176,9 +179,7 @@ box.innerHTML += `
 `;
 });
 }
-function toggleDark(){
-document.body.classList.toggle("dark");
-}
+
 // ================= DEFAULT RECOMMEND =================
 function loadDefaultRecommendations(){
 let box = document.getElementById("recommendations");
@@ -199,7 +200,9 @@ box.innerHTML += `
 
 // ================= INIT =================
 window.onload = () => {
-document.getElementById("loader").style.display = "none";
+let loader = document.getElementById("loader");
+if(loader) loader.style.display = "none";
+
 showProducts(products);
 loadDefaultRecommendations();
 };
