@@ -38,10 +38,36 @@ let products=[
 {name:"Trends T-Shirt",brand:"Trends",price:1299,image:"https://images.unsplash.com/photo-1600185364095-2c7f8b1d2e3f",description:"Casual tee"},
 {name:"Trends Jeans",brand:"Trends",price:2399,image:"https://images.unsplash.com/photo-1600185364135-3c8d7b2f1a2d",description:"Denim jeans"}
 ];
-
 // ================= GLOBAL =================
 let cart = [];
 let clicks = {};
+
+// ================= INIT =================
+window.onload = () => {
+let loader = document.getElementById("loader");
+if(loader) loader.style.display = "none";
+
+initBrands();
+showProducts(products);
+loadDefaultRecommendations();
+};
+
+// ================= BRAND FILTER =================
+function initBrands(){
+let box = document.getElementById("brand-filters");
+if(!box) return;
+
+let brands = [...new Set(products.map(p=>p.brand))];
+
+box.innerHTML = "";
+
+brands.forEach(b=>{
+let btn = document.createElement("button");
+btn.innerText = b;
+btn.onclick = () => filterBrand(b);
+box.appendChild(btn);
+});
+}
 
 // ================= SHOW PRODUCTS =================
 function showProducts(list){
@@ -53,25 +79,26 @@ if(!box) return;
 box.innerHTML = "";
 
 if(list.length === 0){
-empty.style.display = "block";
+if(empty) empty.style.display = "block";
 return;
 }else{
-empty.style.display = "none";
+if(empty) empty.style.display = "none";
 }
 
 list.forEach(p => {
 
-let realIndex = products.findIndex(x => x.name === p.name);
+let index = products.findIndex(x => x.name === p.name);
 
 box.innerHTML += `
 <div class="product">
-<img src="${p.image}" onclick="quickView(${realIndex})">
+<img src="${p.image}" onclick="quickView(${index})">
 <h3>${p.name}</h3>
 <p>₹${p.price}</p>
-<input type="number" value="1" min="1" max="8" id="q${realIndex}">
-<button onclick="addCart(${realIndex})">Add to Cart</button>
+<input type="number" value="1" min="1" max="8" id="q${index}">
+<button onclick="addCart(${index})">Add to Cart</button>
 </div>
 `;
+
 });
 }
 
@@ -103,6 +130,7 @@ let existing = cart.find(x => x.name === p.name);
 
 if(existing){
 existing.qty += qty;
+if(existing.qty > 8) existing.qty = 8;
 }else{
 cart.push({...p, qty});
 }
@@ -114,6 +142,8 @@ toast();
 function updateCart(){
 let box = document.getElementById("cart-items");
 let total = 0;
+
+if(!box) return;
 
 box.innerHTML = "";
 
@@ -143,24 +173,11 @@ let cartBox = document.getElementById("cart");
 cartBox.classList.toggle("open");
 }
 
-// CLOSE CART ON OUTSIDE CLICK
-document.addEventListener("click", function(e){
-let cartBox = document.getElementById("cart");
-
-if(!cartBox.contains(e.target) && !e.target.closest(".cart-icon")){
-cartBox.classList.remove("open");
-}
-});
-
-// ================= UI =================
+// ================= TOAST =================
 function toast(){
 let t = document.getElementById("toast");
 t.style.display="block";
 setTimeout(()=>t.style.display="none",2000);
-}
-
-function toggleDark(){
-document.body.classList.toggle("dark");
 }
 
 // ================= SEARCH =================
@@ -175,6 +192,11 @@ p.brand.toLowerCase().includes(val)
 showProducts(filtered);
 }
 
+// ================= FILTER =================
+function filterBrand(b){
+showProducts(products.filter(p => p.brand === b));
+}
+
 // ================= SORT =================
 function sortProducts(type){
 let arr = [...products];
@@ -185,23 +207,9 @@ if(type === "high") arr.sort((a,b)=>b.price-a.price);
 showProducts(arr);
 }
 
-// ================= BRAND FILTER =================
-function loadBrands(){
-let box = document.getElementById("brand-filters");
-if(!box) return;
-
-let brands = [...new Set(products.map(p=>p.brand))];
-
-box.innerHTML = "";
-
-brands.forEach(b=>{
-box.innerHTML += `<button onclick="filterBrand('${b}')">${b}</button>`;
-});
-}
-
-function filterBrand(brand){
-let filtered = products.filter(p=>p.brand === brand);
-showProducts(filtered);
+// ================= SCROLL =================
+function scrollToProducts(){
+document.getElementById("products").scrollIntoView({behavior:"smooth"});
 }
 
 // ================= ML FEATURES =================
@@ -237,7 +245,6 @@ box.innerHTML += `
 // ================= DEFAULT RECOMMEND =================
 function loadDefaultRecommendations(){
 let box = document.getElementById("recommendations");
-
 if(!box) return;
 
 box.innerHTML = "";
@@ -253,14 +260,7 @@ box.innerHTML += `
 });
 }
 
-// ================= INIT =================
-window.onload = () => {
-
-let loader = document.getElementById("loader");
-if(loader) loader.style.display = "none";
-
-showProducts(products);
-loadDefaultRecommendations();
-loadBrands();
-
-};
+// ================= DARK MODE =================
+function toggleDark(){
+document.body.classList.toggle("dark");
+}
