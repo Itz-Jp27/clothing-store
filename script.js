@@ -38,6 +38,7 @@ let products=[
 {name:"Trends T-Shirt",brand:"Trends",price:1299,image:"https://images.unsplash.com/photo-1600185364095-2c7f8b1d2e3f",description:"Casual tee"},
 {name:"Trends Jeans",brand:"Trends",price:2399,image:"https://images.unsplash.com/photo-1600185364135-3c8d7b2f1a2d",description:"Denim jeans"}
 ];
+
 // ================= GLOBAL =================
 let cart = [];
 let clicks = {};
@@ -136,11 +137,22 @@ cart.splice(i,1);
 updateCart();
 }
 
-// ================= UI =================
+// ================= CART TOGGLE =================
 function toggleCart(){
-document.getElementById("cart").classList.toggle("open");
+let cartBox = document.getElementById("cart");
+cartBox.classList.toggle("open");
 }
 
+// CLOSE CART ON OUTSIDE CLICK
+document.addEventListener("click", function(e){
+let cartBox = document.getElementById("cart");
+
+if(!cartBox.contains(e.target) && !e.target.closest(".cart-icon")){
+cartBox.classList.remove("open");
+}
+});
+
+// ================= UI =================
 function toast(){
 let t = document.getElementById("toast");
 t.style.display="block";
@@ -171,6 +183,25 @@ if(type === "low") arr.sort((a,b)=>a.price-b.price);
 if(type === "high") arr.sort((a,b)=>b.price-a.price);
 
 showProducts(arr);
+}
+
+// ================= BRAND FILTER =================
+function loadBrands(){
+let box = document.getElementById("brand-filters");
+if(!box) return;
+
+let brands = [...new Set(products.map(p=>p.brand))];
+
+box.innerHTML = "";
+
+brands.forEach(b=>{
+box.innerHTML += `<button onclick="filterBrand('${b}')">${b}</button>`;
+});
+}
+
+function filterBrand(brand){
+let filtered = products.filter(p=>p.brand === brand);
+showProducts(filtered);
 }
 
 // ================= ML FEATURES =================
@@ -230,5 +261,6 @@ if(loader) loader.style.display = "none";
 
 showProducts(products);
 loadDefaultRecommendations();
+loadBrands();
 
 };
