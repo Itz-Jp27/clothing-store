@@ -11,28 +11,35 @@
 
 <body>
 
+<!-- Loader -->
 <div id="loader">Loading Store...</div>
 
+<!-- Header -->
 <header>
 <img src="logo.png" class="logo">
 
 <div class="search">
 <input id="search" placeholder="Search..." onkeyup="searchProducts()">
 </div>
+
 <button onclick="toggleDark()">🌙</button>
+
 <div class="cart-icon" onclick="toggleCart()">
 🛒 (<span id="cart-count">0</span>)
 </div>
 </header>
 
+<!-- Hero -->
 <section class="hero">
 <h1>Discover Your Style</h1>
 <p>Premium Brands | Best Prices</p>
 <button onclick="scrollToProducts()">Shop Now</button>
 </section>
 
+<!-- Layout -->
 <div class="layout">
 
+<!-- Sidebar -->
 <aside class="sidebar">
 <select onchange="sortProducts(this.value)">
 <option value="">Sort</option>
@@ -44,13 +51,18 @@
 <div id="brand-filters"></div>
 </aside>
 
+<!-- Main Content -->
 <div class="main-content">
 
-<section id="products"></section>
+<!-- ✅ FIX: added class="products" -->
+<section id="products" class="products"></section>
 
 <section class="recommend-section">
 <h2>Recommended for You</h2>
-<div id="recommendations"></div>
+
+<!-- ✅ FIX: added class="products" -->
+<div id="recommendations" class="products"></div>
+
 </section>
 
 </div>
@@ -58,14 +70,17 @@
 
 <p id="empty">No products found</p>
 
+<!-- Cart -->
 <div class="cart-slider" id="cart">
 <h2>Cart</h2>
 <div id="cart-items"></div>
 <h3 id="total">Total ₹0</h3>
 </div>
 
+<!-- Toast -->
 <div id="toast">Added to Cart</div>
 
+<!-- Quick View -->
 <div class="quick-view" id="quickview">
 <div class="quick-box">
 <img id="q-img">
