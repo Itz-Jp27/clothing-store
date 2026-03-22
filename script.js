@@ -43,295 +43,110 @@ let products=[
 let cart = []
 let clicks = {}
 
-// BRAND FILTERS
-window.addEventListener("DOMContentLoaded", () => {
-
-let brandBox = document.getElementById("brand-filters")
-
-if(brandBox){
-let brands = [...new Set(products.map(p=>p.brand))]
-
-brands.forEach(b=>{
-let btn=document.createElement("button")
-btn.innerText=b
-btn.onclick=()=>filterBrand(b)
-brandBox.appendChild(btn)
-})
-}
-
-showProducts(products)
-loadDefaultRecommendations()
-
-})
-
 // SHOW PRODUCTS
 function showProducts(list){
-
-let box=document.getElementById("products")
-let empty=document.getElementById("empty")
-
-if(!box) return
-
+let box = document.getElementById("products")
 box.innerHTML=""
 
-if(list.length===0){
-empty.style.display="block"
-return
-}else{
-empty.style.display="none"
-}
-
-list.forEach((p)=>{
-
-let index = products.findIndex(x=>x.name===p.name)
-
+list.forEach(p=>{
 box.innerHTML += `
-
 <div class="product">
-
-<img src="${p.image}" onclick="quickView(products[${index}]); trackClick('${p.name}')">
-
+<img src="${p.image}" onclick='quickView(${JSON.stringify(p)})'>
 <h3>${p.name}</h3>
 <p>₹${p.price}</p>
-
-<input type="number" min="1" max="8" value="1" id="q${index}">
-
-<button onclick="addCart(${index})">Add to Cart</button>
-
-</div>
-
-`
+<button onclick='addCart(${JSON.stringify(p)})'>Add</button>
+</div>`
 })
 }
 
 // QUICK VIEW
-function quickView(product){
-
-document.getElementById("q-img").src=product.image
-document.getElementById("q-name").innerText=product.name
-document.getElementById("q-price").innerText="₹"+product.price
-
+function quickView(p){
+document.getElementById("q-img").src=p.image
+document.getElementById("q-name").innerText=p.name
+document.getElementById("q-price").innerText="₹"+p.price
 document.getElementById("quickview").style.display="flex"
 
-showRecommendations(product)
-trackClick(product.name)
+trackClick(p.name)
+showRecommendations(p)
 }
 
-// CLOSE QUICK VIEW
+// CLOSE
 function closeQuick(){
 document.getElementById("quickview").style.display="none"
 }
 
-// ADD CART
-function addCart(index){
-
-let qty=parseInt(document.getElementById("q"+index).value)
-
-if(qty>8){
-alert("Max 8 allowed")
-return
-}
-
-let product = products[index]
-
-let existing=cart.find(item=>item.name===product.name)
-
-if(existing){
-existing.qty+=qty
-if(existing.qty>8){
-existing.qty=8
-alert("Max 8 allowed")
-}
-}else{
-cart.push({...product,qty})
-}
-
+// CART
+function addCart(p){
+let ex=cart.find(x=>x.name===p.name)
+if(ex) ex.qty++
+else cart.push({...p,qty:1})
 updateCart()
-toast()
-suggestFromCart()
 }
 
-// UPDATE CART
 function updateCart(){
-
 let box=document.getElementById("cart-items")
 let total=0
-
 box.innerHTML=""
 
-cart.forEach((p,i)=>{
-
-box.innerHTML+=`
-
-<div class="cart-item">
-<b>${p.name}</b>
-
-<div class="qty">
-<button onclick="dec(${i})">-</button>
-${p.qty}
-<button onclick="inc(${i})">+</button>
-</div>
-
-<p>₹${p.price*p.qty}</p>
-<button onclick="removeItem(${i})">Remove</button>
-</div>
-
-`
-
+cart.forEach(p=>{
+box.innerHTML+=`<p>${p.name} x${p.qty}</p>`
 total+=p.price*p.qty
-
 })
 
-document.getElementById("total").innerText="Total ₹"+total
+document.getElementById("total").innerText="₹"+total
 document.getElementById("cart-count").innerText=cart.length
 }
 
-// CART CONTROLS
-function inc(i){
-if(cart[i].qty>=8) return
-cart[i].qty++
-updateCart()
-}
-
-function dec(i){
-if(cart[i].qty>1) cart[i].qty--
-updateCart()
-}
-
-function removeItem(i){
-cart.splice(i,1)
-updateCart()
-}
-
-// CART TOGGLE
+// TOGGLE
 function toggleCart(){
 document.getElementById("cart").classList.toggle("open")
 }
 
-// TOAST
-function toast(){
-let t=document.getElementById("toast")
-t.style.display="block"
-setTimeout(()=>{t.style.display="none"},2000)
-}
-
 // SEARCH
 function searchProducts(){
-
 let val=document.getElementById("search").value.toLowerCase()
-
-let filtered=products.filter(p =>
-p.name.toLowerCase().includes(val) ||
-p.brand.toLowerCase().includes(val)
-)
-
-showProducts(filtered)
+let f=products.filter(p=>p.name.toLowerCase().includes(val))
+showProducts(f)
 }
 
-// FILTER
-function filterBrand(b){
-showProducts(products.filter(p=>p.brand===b))
-}
-
-// SORT
-function sortProducts(type){
-let arr=[...products]
-
-if(type==="low") arr.sort((a,b)=>a.price-b.price)
-if(type==="high") arr.sort((a,b)=>b.price-a.price)
-
-showProducts(arr)
-}
-
-// SCROLL
-function scrollToProducts(){
-document.getElementById("products").scrollIntoView({behavior:"smooth"})
-}
-
-// ML TRACKING
+// ML
 function trackClick(name){
 clicks[name]=(clicks[name]||0)+1
 }
 
-// RECOMMENDATION LOGIC
-function getRecommendations(product){
-return products.filter(p =>
-p.brand===product.brand && p.name!==product.name
-).slice(0,4)
+function getRecommendations(p){
+return products.filter(x=>x.brand===p.brand && x.name!==p.name)
 }
 
-// SHOW RECOMMENDATIONS
-function showRecommendations(product){
-
+function showRecommendations(p){
 let box=document.getElementById("recommendations")
-if(!box) return
-
-let rec=getRecommendations(product)
+let rec=getRecommendations(p)
 
 box.innerHTML=""
-
-rec.forEach(p=>{
-let index = products.findIndex(x=>x.name===p.name)
-
+rec.forEach(r=>{
 box.innerHTML+=`
-
 <div class="product">
-<img src="${p.image}" onclick="quickView(products[${index}])">
-<h3>${p.name}</h3>
-<p>₹${p.price}</p>
-</div>
-
-`
+<img src="${r.image}">
+<h3>${r.name}</h3>
+<p>₹${r.price}</p>
+</div>`
 })
 }
 
-// DEFAULT RECOMMENDATIONS
-function loadDefaultRecommendations(){
+// INIT
+window.onload=()=>{
+showProducts(products)
 
+// default rec
 let box=document.getElementById("recommendations")
-
-let random=[...products].sort(()=>0.5-Math.random()).slice(0,4)
-
-box.innerHTML=""
-
-random.forEach(p=>{
-let index = products.findIndex(x=>x.name===p.name)
-
+products.slice(0,3).forEach(p=>{
 box.innerHTML+=`
-
 <div class="product">
-<img src="${p.image}" onclick="quickView(products[${index}])">
+<img src="${p.image}">
 <h3>${p.name}</h3>
 <p>₹${p.price}</p>
-</div>
-
-`
-})
-}
-
-// CART ML SUGGESTION
-function suggestFromCart(){
-if(cart.length===0) return
-
-let last=cart[cart.length-1]
-let suggestions=getRecommendations(last)
-
-console.log("Cart Suggestions:", suggestions)
-}
-
-// TRENDING
-function showTrending(){
-let sorted=[...products]
-
-sorted.sort((a,b)=>{
-return (clicks[b.name]||0)-(clicks[a.name]||0)
+</div>`
 })
 
-showProducts(sorted)
-}
-
-// LOADER
-window.onload=function(){
-let loader=document.getElementById("loader")
-if(loader) loader.style.display="none"
+document.getElementById("loader").style.display="none"
 }
