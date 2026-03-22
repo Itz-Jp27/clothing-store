@@ -176,7 +176,9 @@ box.innerHTML += `
 `;
 });
 }
-
+function toggleDark(){
+document.body.classList.toggle("dark");
+}
 // ================= DEFAULT RECOMMEND =================
 function loadDefaultRecommendations(){
 let box = document.getElementById("recommendations");
