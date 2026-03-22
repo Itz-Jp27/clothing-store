@@ -39,17 +39,20 @@ let products=[
 {name:"Trends Jeans",brand:"Trends",price:2399,image:"https://images.unsplash.com/photo-1600185364135-3c8d7b2f1a2d",description:"Denim jeans"}
 ];
 // ================= GLOBAL =================
-let cart = [];
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let clicks = {};
 
 // ================= INIT =================
 window.onload = () => {
+setTimeout(()=>{
 let loader = document.getElementById("loader");
 if(loader) loader.style.display = "none";
+},500);
 
 initBrands();
 showProducts(products);
 loadDefaultRecommendations();
+updateCart();
 };
 
 // ================= BRAND FILTER =================
@@ -59,7 +62,7 @@ if(!box) return;
 
 let brands = [...new Set(products.map(p=>p.brand))];
 
-box.innerHTML = "";
+box.innerHTML = `<button onclick="showProducts(products)">All</button>`;
 
 brands.forEach(b=>{
 let btn = document.createElement("button");
@@ -74,19 +77,16 @@ function showProducts(list){
 let box = document.getElementById("products");
 let empty = document.getElementById("empty");
 
-if(!box) return;
-
 box.innerHTML = "";
 
 if(list.length === 0){
-if(empty) empty.style.display = "block";
+empty.style.display = "block";
 return;
 }else{
-if(empty) empty.style.display = "none";
+empty.style.display = "none";
 }
 
-list.forEach(p => {
-
+list.forEach(p=>{
 let index = products.findIndex(x => x.name === p.name);
 
 box.innerHTML += `
@@ -94,12 +94,30 @@ box.innerHTML += `
 <img src="${p.image}" onclick="quickView(${index})">
 <h3>${p.name}</h3>
 <p>₹${p.price}</p>
+
+<div class="qty-box">
+<button onclick="changeQty(${index},-1)">-</button>
 <input type="number" value="1" min="1" max="8" id="q${index}">
+<button onclick="changeQty(${index},1)">+</button>
+</div>
+
 <button onclick="addCart(${index})">Add to Cart</button>
 </div>
 `;
-
 });
+}
+
+// ================= CHANGE QTY =================
+function changeQty(i,change){
+let input = document.getElementById("q"+i);
+let val = parseInt(input.value) || 1;
+
+val += change;
+
+if(val < 1) val = 1;
+if(val > 8) val = 8;
+
+input.value = val;
 }
 
 // ================= QUICK VIEW =================
@@ -135,15 +153,15 @@ if(existing.qty > 8) existing.qty = 8;
 cart.push({...p, qty});
 }
 
+saveCart();
 updateCart();
 toast();
 }
 
+// ================= UPDATE CART =================
 function updateCart(){
 let box = document.getElementById("cart-items");
 let total = 0;
-
-if(!box) return;
 
 box.innerHTML = "";
 
@@ -151,8 +169,16 @@ cart.forEach((p,i)=>{
 box.innerHTML += `
 <div class="cart-item">
 <b>${p.name}</b>
-<p>${p.qty} x ₹${p.price}</p>
-<button onclick="removeItem(${i})">Remove</button>
+
+<div class="cart-controls">
+<button onclick="updateQty(${i},-1)">-</button>
+<span>${p.qty}</span>
+<button onclick="updateQty(${i},1)">+</button>
+</div>
+
+<p>₹${p.price * p.qty}</p>
+
+<button onclick="removeItem(${i})">❌</button>
 </div>
 `;
 total += p.price * p.qty;
@@ -162,15 +188,42 @@ document.getElementById("total").innerText = "Total ₹"+total;
 document.getElementById("cart-count").innerText = cart.length;
 }
 
+// ================= UPDATE QTY IN CART =================
+function updateQty(i,change){
+let item = cart[i];
+
+item.qty += change;
+
+if(item.qty < 1){
+cart.splice(i,1);
+}else if(item.qty > 8){
+item.qty = 8;
+}
+
+saveCart();
+updateCart();
+}
+
+// ================= REMOVE =================
 function removeItem(i){
 cart.splice(i,1);
+saveCart();
 updateCart();
+}
+
+// ================= SAVE =================
+function saveCart(){
+localStorage.setItem("cart", JSON.stringify(cart));
 }
 
 // ================= CART TOGGLE =================
 function toggleCart(){
 let cartBox = document.getElementById("cart");
+let overlay = document.getElementById("overlay");
+
 cartBox.classList.toggle("open");
+
+overlay.style.display = cartBox.classList.contains("open") ? "block" : "none";
 }
 
 // ================= TOAST =================
@@ -212,44 +265,45 @@ function scrollToProducts(){
 document.getElementById("products").scrollIntoView({behavior:"smooth"});
 }
 
-// ================= ML FEATURES =================
+// ================= ML (SMART RECOMMEND) =================
 function trackClick(name){
 clicks[name] = (clicks[name] || 0) + 1;
 }
 
-function getRecommendations(product){
+function getRecommendations(){
+let sorted = Object.entries(clicks).sort((a,b)=>b[1]-a[1]);
+
+if(sorted.length === 0){
+return [...products].sort(()=>0.5 - Math.random()).slice(0,6);
+}
+
+let fav = sorted[0][0];
+
+let favProduct = products.find(p=>p.name === fav);
+
 return products.filter(p =>
-p.brand === product.brand && p.name !== product.name
-).slice(0,4);
+p.brand === favProduct.brand && p.name !== favProduct.name
+).slice(0,6);
 }
 
 function showRecommendations(product){
-let rec = getRecommendations(product);
-let box = document.getElementById("recommendations");
+let rec = products.filter(p =>
+p.brand === product.brand && p.name !== product.name
+).slice(0,6);
 
-if(!box) return;
-
-box.innerHTML = "";
-
-rec.forEach(p=>{
-box.innerHTML += `
-<div class="product">
-<img src="${p.image}">
-<h3>${p.name}</h3>
-<p>₹${p.price}</p>
-</div>
-`;
-});
+renderRecommendations(rec);
 }
 
-// ================= DEFAULT RECOMMEND =================
 function loadDefaultRecommendations(){
+renderRecommendations(getRecommendations());
+}
+
+function renderRecommendations(list){
 let box = document.getElementById("recommendations");
-if(!box) return;
 
 box.innerHTML = "";
 
-products.slice(0,4).forEach(p=>{
+list.forEach(p=>{
 box.innerHTML += `
 <div class="product">
 <img src="${p.image}">
