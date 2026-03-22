@@ -45,9 +45,18 @@ let clicks = {};
 // ================= SHOW PRODUCTS =================
 function showProducts(list){
 let box = document.getElementById("products");
+let empty = document.getElementById("empty");
+
 if(!box) return;
 
 box.innerHTML = "";
+
+if(list.length === 0){
+empty.style.display = "block";
+return;
+}else{
+empty.style.display = "none";
+}
 
 list.forEach(p => {
 
@@ -138,6 +147,10 @@ t.style.display="block";
 setTimeout(()=>t.style.display="none",2000);
 }
 
+function toggleDark(){
+document.body.classList.toggle("dark");
+}
+
 // ================= SEARCH =================
 function searchProducts(){
 let val = document.getElementById("search").value.toLowerCase();
@@ -148,6 +161,16 @@ p.brand.toLowerCase().includes(val)
 );
 
 showProducts(filtered);
+}
+
+// ================= SORT =================
+function sortProducts(type){
+let arr = [...products];
+
+if(type === "low") arr.sort((a,b)=>a.price-b.price);
+if(type === "high") arr.sort((a,b)=>b.price-a.price);
+
+showProducts(arr);
 }
 
 // ================= ML FEATURES =================
@@ -183,6 +206,7 @@ box.innerHTML += `
 // ================= DEFAULT RECOMMEND =================
 function loadDefaultRecommendations(){
 let box = document.getElementById("recommendations");
+
 if(!box) return;
 
 box.innerHTML = "";
@@ -200,11 +224,11 @@ box.innerHTML += `
 
 // ================= INIT =================
 window.onload = () => {
+
 let loader = document.getElementById("loader");
 if(loader) loader.style.display = "none";
 
 showProducts(products);
 loadDefaultRecommendations();
+
 };
-document.getElementById("loader").style.display="none"
-}
