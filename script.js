@@ -38,6 +38,7 @@ let products=[
 {name:"Trends T-Shirt",brand:"Trends",price:1299,image:"https://images.unsplash.com/photo-1600185364095-2c7f8b1d2e3f",description:"Casual tee"},
 {name:"Trends Jeans",brand:"Trends",price:2399,image:"https://images.unsplash.com/photo-1600185364135-3c8d7b2f1a2d",description:"Denim jeans"}
 ];
+
 // ================= GLOBAL =================
 let cart = [];
 let clicks = {};
@@ -45,24 +46,45 @@ let currentList = [...products];
 
 // ================= INIT =================
 window.onload = () => {
-document.getElementById("loader").style.display = "none";
+try{
+let loader = document.getElementById("loader");
+if(loader) loader.style.display = "none";
 
 initBrands();
 showProducts(products);
 loadDefaultRecommendations();
 
-// close cart if click outside
+}catch(err){
+console.error("INIT ERROR:", err);
+}
+};
+
+// ================= GLOBAL CLICK HANDLER =================
 document.addEventListener("click", function(e){
+
+// CART CLOSE
 let cartBox = document.getElementById("cart");
-if(!cartBox.contains(e.target) && !e.target.closest(".cart-icon")){
+if(cartBox && !cartBox.contains(e.target) && !e.target.closest(".cart-icon")){
 cartBox.classList.remove("open");
 }
+
+// QUICK VIEW CLOSE
+let quick = document.getElementById("quickview");
+let quickBox = document.querySelector(".quick-box");
+
+if(quick && quick.style.display === "flex"){
+if(quickBox && !quickBox.contains(e.target)){
+quick.style.display = "none";
+}
+}
+
 });
-};
 
 // ================= BRAND FILTER =================
 function initBrands(){
 let box = document.getElementById("brand-filters");
+if(!box) return;
+
 let brands = [...new Set(products.map(p=>p.brand))];
 
 box.innerHTML = "";
@@ -82,12 +104,16 @@ currentList = list;
 let box = document.getElementById("products");
 let empty = document.getElementById("empty");
 
+if(!box) return;
+
 box.innerHTML = "";
 
 if(list.length === 0){
-empty.style.display = "block";
+if(empty) empty.style.display = "block";
 return;
-}else empty.style.display = "none";
+}else{
+if(empty) empty.style.display = "none";
+}
 
 list.forEach(p=>{
 let i = products.findIndex(x=>x.name===p.name);
@@ -113,6 +139,8 @@ box.innerHTML += `
 // ================= QUANTITY =================
 function changeQty(i, change){
 let input = document.getElementById("q"+i);
+if(!input) return;
+
 let val = parseInt(input.value) + change;
 
 if(val < 1) val = 1;
@@ -125,35 +153,34 @@ input.value = val;
 function quickView(i){
 let p = products[i];
 
-document.getElementById("q-img").src = p.image;
-document.getElementById("q-name").innerText = p.name;
-document.getElementById("q-price").innerText = "₹" + p.price;
+let img = document.getElementById("q-img");
+let name = document.getElementById("q-name");
+let price = document.getElementById("q-price");
+let modal = document.getElementById("quickview");
 
-document.getElementById("quickview").style.display = "flex";
+if(!img || !name || !price || !modal) return;
+
+img.src = p.image;
+name.innerText = p.name;
+price.innerText = "₹" + p.price;
+
+modal.style.display = "flex";
 
 trackClick(p.name);
 showRecommendations(p);
 }
 
-// CLOSE quick view (click outside also)
-document.addEventListener("click", function(e){
-let box = document.querySelector(".quick-box");
-let modal = document.getElementById("quickview");
-
-if(modal.style.display === "flex" && !box.contains(e.target)){
-modal.style.display = "none";
-}
-});
-
 function closeQuick(){
-document.getElementById("quickview").style.display = "none";
+let modal = document.getElementById("quickview");
+if(modal) modal.style.display = "none";
 }
 
 // ================= CART =================
 function addCart(i){
-let qty = parseInt(document.getElementById("q"+i)?.value || 1);
-let p = products[i];
+let input = document.getElementById("q"+i);
+let qty = input ? parseInt(input.value) : 1;
 
+let p = products[i];
 let existing = cart.find(x=>x.name===p.name);
 
 if(existing){
@@ -167,10 +194,11 @@ updateCart();
 toast();
 }
 
-// UPDATE CART UI
 function updateCart(){
 let box = document.getElementById("cart-items");
 let total = 0;
+
+if(!box) return;
 
 box.innerHTML = "";
 
@@ -178,11 +206,13 @@ cart.forEach((p,i)=>{
 box.innerHTML += `
 <div class="cart-item">
 <b>${p.name}</b>
+
 <div class="qty-box">
 <button onclick="cartQty(${i}, -1)">-</button>
 <span>${p.qty}</span>
 <button onclick="cartQty(${i}, 1)">+</button>
 </div>
+
 <p>₹${p.price * p.qty}</p>
 <button onclick="removeItem(${i})">Remove</button>
 </div>
@@ -191,11 +221,13 @@ box.innerHTML += `
 total += p.price * p.qty;
 });
 
-document.getElementById("total").innerText = "Total ₹"+total;
-document.getElementById("cart-count").innerText = cart.length;
+let totalEl = document.getElementById("total");
+let countEl = document.getElementById("cart-count");
+
+if(totalEl) totalEl.innerText = "Total ₹" + total;
+if(countEl) countEl.innerText = cart.length;
 }
 
-// CART QTY CHANGE
 function cartQty(i, change){
 cart[i].qty += change;
 
@@ -212,12 +244,15 @@ updateCart();
 
 // ================= CART TOGGLE =================
 function toggleCart(){
-document.getElementById("cart").classList.toggle("open");
+let cart = document.getElementById("cart");
+if(cart) cart.classList.toggle("open");
 }
 
 // ================= TOAST =================
 function toast(){
 let t = document.getElementById("toast");
+if(!t) return;
+
 t.style.display="block";
 setTimeout(()=>t.style.display="none",1500);
 }
@@ -251,30 +286,28 @@ showProducts(arr);
 
 // ================= SCROLL =================
 function scrollToProducts(){
-document.getElementById("products").scrollIntoView({behavior:"smooth"});
+let el = document.getElementById("products");
+if(el) el.scrollIntoView({behavior:"smooth"});
 }
 
-// ================= SMART RECOMMEND =================
+// ================= RECOMMEND =================
 function trackClick(name){
 clicks[name] = (clicks[name] || 0) + 1;
 }
 
 function getRecommendations(product){
-let sorted = [...products].sort((a,b)=>
-(clicks[b.name]||0)-(clicks[a.name]||0)
-);
-
 let sameBrand = products.filter(p =>
 p.brand === product.brand && p.name !== product.name
 );
 
-return [...sameBrand, ...sorted].slice(0,4);
+return sameBrand.slice(0,4);
 }
 
-// SHOW RECOMMENDATIONS (🔥 FIXED ADD CART)
 function showRecommendations(product){
 let rec = getRecommendations(product);
 let box = document.getElementById("recommendations");
+
+if(!box) return;
 
 box.innerHTML = "";
 
@@ -286,22 +319,15 @@ box.innerHTML += `
 <img src="${p.image}" onclick="quickView(${i})">
 <h3>${p.name}</h3>
 <p>₹${p.price}</p>
-
-<div class="qty-box">
-<button onclick="changeQty(${i}, -1)">-</button>
-<input type="number" value="1" min="1" max="8" id="q${i}">
-<button onclick="changeQty(${i}, 1)">+</button>
-</div>
-
 <button onclick="addCart(${i})">Add to Cart</button>
 </div>
 `;
 });
 }
 
-// DEFAULT RECOMMEND
 function loadDefaultRecommendations(){
 let box = document.getElementById("recommendations");
+if(!box) return;
 
 box.innerHTML = "";
 
@@ -313,13 +339,16 @@ box.innerHTML += `
 <img src="${p.image}" onclick="quickView(${i})">
 <h3>${p.name}</h3>
 <p>₹${p.price}</p>
-
 <button onclick="addCart(${i})">Add to Cart</button>
 </div>
 `;
 });
 }
 
+// ================= DARK MODE =================
+function toggleDark(){
+document.body.classList.toggle("dark");
+}
 // ================= DARK MODE =================
 function toggleDark(){
 document.body.classList.toggle("dark");
