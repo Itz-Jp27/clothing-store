@@ -297,3 +297,26 @@ margin-top:8px;
 padding:5px 10px;
 cursor:pointer;
 }
+.cart-item {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.cart-item button {
+  background: red;
+  color: white;
+  border: none;
+  padding: 5px 8px;
+  cursor: pointer;
+}
+
+#cart > button{
+  width:100%;
+  margin-top:12px;
+  padding:10px 12px;
+  border:none;
+  background:#111;
+  color:#fff;
+  border-radius:8px;
+  cursor:pointer;
+}
